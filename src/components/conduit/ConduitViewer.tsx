@@ -14,7 +14,7 @@ export default function ConduitViewer() {
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.4} />
-          <directionalLight position={[10, 20, 10]} intensity={1.2} castShadow />
+          <directionalLight position={[10, 20, 10]} intensity={1.2} />
           <directionalLight position={[-10, -5, -10]} intensity={0.3} color="#C4A882" />
           <OrbitControls
             enablePan={false}

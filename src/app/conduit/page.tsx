@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function ConduitPage() {
   return (
-    <main style={{ backgroundColor: "#0A0A0A", minHeight: "100vh" }}>
+    <main style={{ backgroundColor: "#0A0A0A", minHeight: "100vh", fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif" }}>
       <div style={{ paddingTop: "72px" }}>
         <div style={{ padding: "32px 32px 16px" }}>
           <p
@@ -16,7 +16,6 @@ export default function ConduitPage() {
               letterSpacing: "0.3em",
               textTransform: "uppercase",
               color: "#C4A882",
-              fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
               marginBottom: "8px",
             }}
           >
@@ -28,7 +27,6 @@ export default function ConduitPage() {
               fontWeight: 500,
               letterSpacing: "0.1em",
               color: "#FFFFFF",
-              fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
               marginBottom: "4px",
             }}
           >
@@ -38,7 +36,6 @@ export default function ConduitPage() {
             style={{
               fontSize: "12px",
               color: "rgba(255,255,255,0.4)",
-              fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
             }}
           >
             Tube shell, vacuum system, seals, pylons, sensors. Scale 1:1 — real geometry.
