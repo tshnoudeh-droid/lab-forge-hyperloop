@@ -2,15 +2,22 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+import TubeGeometry from "./TubeGeometry";
+import ViewControls from "./ViewControls";
+
+type ViewMode = "cutaway" | "exterior" | "section";
 
 export default function ConduitViewer() {
+  const [viewMode, setViewMode] = useState<ViewMode>("cutaway");
+
   return (
     <div style={{ width: "100%", height: "600px", position: "relative" }}>
+      <ViewControls mode={viewMode} onChange={setViewMode} />
       <Canvas
         camera={{ position: [12, 6, 20], fov: 45, near: 0.1, far: 1000 }}
         style={{ background: "#0A0A0A" }}
-        gl={{ antialias: true }}
+        gl={{ antialias: true, localClippingEnabled: true }}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.4} />
@@ -23,11 +30,7 @@ export default function ConduitViewer() {
             autoRotate
             autoRotateSpeed={0.4}
           />
-          {/* Placeholder box — will be replaced by TubeGeometry in Task 3 */}
-          <mesh>
-            <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color="#C4A882" wireframe />
-          </mesh>
+          <TubeGeometry viewMode={viewMode} />
         </Suspense>
       </Canvas>
       <div
