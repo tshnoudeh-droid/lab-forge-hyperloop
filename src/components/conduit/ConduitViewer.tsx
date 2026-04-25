@@ -4,11 +4,14 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Suspense, useState } from "react";
 import TubeGeometry from "./TubeGeometry";
+import InternalSystems from "./InternalSystems";
 import ViewControls from "./ViewControls";
 import type { ViewMode } from "./types";
 
 export default function ConduitViewer() {
   const [viewMode, setViewMode] = useState<ViewMode>("cutaway");
+  const [showHalbach, setShowHalbach] = useState(true);
+  const [showLIM, setShowLIM] = useState(true);
 
   return (
     <div style={{ width: "100%", height: "600px", position: "relative" }}>
@@ -30,6 +33,7 @@ export default function ConduitViewer() {
             autoRotateSpeed={0.4}
           />
           <TubeGeometry viewMode={viewMode} />
+          <InternalSystems showHalbach={showHalbach} showLIM={showLIM} viewMode={viewMode} />
         </Suspense>
       </Canvas>
       <div
@@ -46,6 +50,40 @@ export default function ConduitViewer() {
         }}
       >
         Scale 1:1 — Real Geometry
+      </div>
+      {/* Layer toggles */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "48px",
+          left: "16px",
+          display: "flex",
+          gap: "2px",
+        }}
+      >
+        {[
+          { key: "halbach", label: "HALBACH TRACK", active: showHalbach, toggle: () => setShowHalbach((v) => !v) },
+          { key: "lim", label: "LIM STATOR", active: showLIM, toggle: () => setShowLIM((v) => !v) },
+        ].map(({ key, label, active, toggle }) => (
+          <button
+            key={key}
+            onClick={toggle}
+            style={{
+              padding: "5px 10px",
+              fontSize: "9px",
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+              background: active ? "rgba(196,168,130,0.12)" : "rgba(255,255,255,0.04)",
+              color: active ? "#C4A882" : "rgba(255,255,255,0.3)",
+              border: `1px solid ${active ? "rgba(196,168,130,0.3)" : "rgba(255,255,255,0.08)"}`,
+              cursor: "pointer",
+              transition: "all 0.15s",
+            }}
+          >
+            {label}
+          </button>
+        ))}
       </div>
     </div>
   );
