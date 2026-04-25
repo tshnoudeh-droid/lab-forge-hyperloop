@@ -1,6 +1,6 @@
 "use client";
 
-type ViewMode = "cutaway" | "exterior" | "section";
+import type { ViewMode } from "./types";
 
 interface ViewControlsProps {
   mode: ViewMode;

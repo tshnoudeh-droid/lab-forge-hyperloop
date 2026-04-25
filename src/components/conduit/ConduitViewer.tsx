@@ -5,8 +5,7 @@ import { OrbitControls } from "@react-three/drei";
 import { Suspense, useState } from "react";
 import TubeGeometry from "./TubeGeometry";
 import ViewControls from "./ViewControls";
-
-type ViewMode = "cutaway" | "exterior" | "section";
+import type { ViewMode } from "./types";
 
 export default function ConduitViewer() {
   const [viewMode, setViewMode] = useState<ViewMode>("cutaway");
