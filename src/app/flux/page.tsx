@@ -4,7 +4,7 @@ export default function Flux() {
       style={{
         minHeight: "100vh",
         padding: "128px 32px 96px",
-        backgroundColor: "#0A0A0A",
+        backgroundColor: "var(--background)",
         fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
       }}
     >
@@ -14,7 +14,7 @@ export default function Flux() {
             fontSize: "10px",
             letterSpacing: "0.3em",
             textTransform: "uppercase",
-            color: "#C4A882",
+            color: "var(--color-accent)",
             marginBottom: "16px",
           }}
         >
@@ -25,13 +25,13 @@ export default function Flux() {
             fontSize: "64px",
             fontWeight: 500,
             letterSpacing: "0.1em",
-            color: "#FFFFFF",
+            color: "var(--foreground)",
             marginBottom: "24px",
           }}
         >
           FLUX
         </h1>
-        <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)" }}>
+        <p style={{ fontSize: "13px", color: "var(--muted)" }}>
           IN DEVELOPMENT
         </p>
       </div>

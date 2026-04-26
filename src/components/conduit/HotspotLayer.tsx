@@ -16,20 +16,23 @@ export default function HotspotLayer({ activeId, onHotspotClick }: HotspotLayerP
           {/* Small sphere marker */}
           <mesh>
             <sphereGeometry args={[0.06, 8, 8]} />
-            <meshBasicMaterial color={activeId === h.id ? "#C4A882" : "#FFFFFF"} />
+            <meshBasicMaterial
+              color={activeId === h.id ? "#C4A882" : "var(--foreground)"}
+            />
           </mesh>
           {/* Billboarded HTML label */}
-          <Html
-            center
-            distanceFactor={12}
-            style={{ pointerEvents: "auto" }}
-          >
+          <Html center distanceFactor={12} style={{ pointerEvents: "auto" }}>
             <button
-              onClick={() => onHotspotClick(h.id, [...h.cameraPreset] as [number, number, number])}
+              onClick={() =>
+                onHotspotClick(h.id, [
+                  ...h.cameraPreset,
+                ] as [number, number, number])
+              }
               style={{
-                background: activeId === h.id ? "#C4A882" : "rgba(10,10,10,0.88)",
-                color: activeId === h.id ? "#0A0A0A" : "#FFFFFF",
-                border: `1px solid ${activeId === h.id ? "#C4A882" : "rgba(255,255,255,0.3)"}`,
+                background:
+                  activeId === h.id ? "#C4A882" : "var(--card-bg)",
+                color: activeId === h.id ? "var(--background)" : "var(--foreground)",
+                border: `1px solid ${activeId === h.id ? "#C4A882" : "var(--border)"}`,
                 padding: "4px 8px",
                 fontSize: "9px",
                 letterSpacing: "0.2em",
@@ -38,6 +41,7 @@ export default function HotspotLayer({ activeId, onHotspotClick }: HotspotLayerP
                 whiteSpace: "nowrap",
                 transition: "all 0.15s",
                 userSelect: "none",
+                opacity: 0.9,
               }}
             >
               {h.id} {h.label}

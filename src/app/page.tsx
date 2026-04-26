@@ -30,7 +30,7 @@ export default function Home() {
       style={{
         minHeight: "100vh",
         padding: "128px 32px 96px",
-        backgroundColor: "#0A0A0A",
+        backgroundColor: "var(--background)",
         fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
       }}
     >
@@ -41,7 +41,7 @@ export default function Home() {
             fontWeight: 700,
             lineHeight: 1,
             letterSpacing: "-0.03em",
-            color: "#FFFFFF",
+            color: "var(--foreground)",
             marginBottom: "8px",
           }}
         >
@@ -52,7 +52,7 @@ export default function Home() {
             fontSize: "13px",
             letterSpacing: "0.3em",
             textTransform: "uppercase",
-            color: "rgba(255,255,255,0.4)",
+            color: "var(--muted)",
             marginBottom: "8px",
           }}
         >
@@ -61,7 +61,7 @@ export default function Home() {
         <p
           style={{
             fontSize: "13px",
-            color: "rgba(255,255,255,0.5)",
+            color: "var(--muted)",
             marginBottom: "64px",
             maxWidth: "480px",
             lineHeight: 1.6,
@@ -72,7 +72,7 @@ export default function Home() {
 
         <div
           style={{
-            borderTop: "1px solid rgba(255,255,255,0.1)",
+            borderTop: "1px solid var(--border)",
             marginBottom: "32px",
           }}
         />
@@ -82,7 +82,7 @@ export default function Home() {
             fontSize: "11px",
             letterSpacing: "0.3em",
             textTransform: "uppercase",
-            color: "rgba(255,255,255,0.35)",
+            color: "var(--muted-more)",
             marginBottom: "32px",
           }}
         >
@@ -94,7 +94,7 @@ export default function Home() {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
             gap: "1px",
-            backgroundColor: "rgba(255,255,255,0.08)",
+            backgroundColor: "var(--border)",
           }}
         >
           {subsystems.map((s) => {
@@ -103,9 +103,9 @@ export default function Home() {
               <div
                 style={{
                   padding: "32px",
-                  backgroundColor: "#0A0A0A",
+                  backgroundColor: "var(--card-bg)",
                   borderLeft: isActive
-                    ? "2px solid #C4A882"
+                    ? "2px solid var(--color-accent)"
                     : "2px solid transparent",
                 }}
               >
@@ -114,7 +114,7 @@ export default function Home() {
                     fontSize: "10px",
                     letterSpacing: "0.3em",
                     textTransform: "uppercase",
-                    color: isActive ? "#C4A882" : "rgba(255,255,255,0.3)",
+                    color: isActive ? "var(--color-accent)" : "var(--muted-more)",
                     marginBottom: "12px",
                   }}
                 >
@@ -125,7 +125,7 @@ export default function Home() {
                     fontSize: "22px",
                     fontWeight: 500,
                     letterSpacing: "0.1em",
-                    color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.35)",
+                    color: isActive ? "var(--foreground)" : "var(--muted)",
                     marginBottom: "12px",
                   }}
                 >
@@ -134,7 +134,7 @@ export default function Home() {
                 <p
                   style={{
                     fontSize: "12px",
-                    color: "rgba(255,255,255,0.4)",
+                    color: "var(--muted)",
                     marginBottom: "24px",
                     lineHeight: 1.6,
                   }}
@@ -146,7 +146,7 @@ export default function Home() {
                     fontSize: "10px",
                     letterSpacing: "0.25em",
                     textTransform: "uppercase",
-                    color: isActive ? "#C4A882" : "rgba(255,255,255,0.2)",
+                    color: isActive ? "var(--color-accent)" : "var(--muted-more)",
                   }}
                 >
                   {s.status}

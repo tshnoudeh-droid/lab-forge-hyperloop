@@ -57,7 +57,13 @@ export default function ConduitViewer() {
   }
 
   return (
-    <div style={{ width: "100%", height: "clamp(400px, 55vh, 600px)", position: "relative" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "clamp(400px, 55vh, 600px)",
+        position: "relative",
+      }}
+    >
       <ViewControls mode={viewMode} onChange={setViewMode} />
       <button
         onClick={() => {
@@ -74,8 +80,8 @@ export default function ConduitViewer() {
           letterSpacing: "0.2em",
           textTransform: "uppercase",
           fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-          background: "rgba(255,255,255,0.05)",
-          color: "rgba(255,255,255,0.5)",
+          background: "var(--border)",
+          color: "var(--muted)",
           border: "none",
           cursor: "pointer",
           zIndex: 10,
@@ -86,7 +92,7 @@ export default function ConduitViewer() {
       </button>
       <Canvas
         camera={{ position: [12, 6, 20], fov: 45, near: 0.1, far: 1000 }}
-        style={{ background: "#0A0A0A" }}
+        style={{ background: "var(--background)" }}
         gl={{ antialias: true, localClippingEnabled: true }}
       >
         <Suspense
@@ -97,7 +103,7 @@ export default function ConduitViewer() {
                   fontSize: "10px",
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.3)",
+                  color: "var(--muted)",
                   fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
                   whiteSpace: "nowrap",
                 }}
@@ -109,7 +115,11 @@ export default function ConduitViewer() {
         >
           <ambientLight intensity={0.4} />
           <directionalLight position={[10, 20, 10]} intensity={1.2} />
-          <directionalLight position={[-10, -5, -10]} intensity={0.3} color="#C4A882" />
+          <directionalLight
+            position={[-10, -5, -10]}
+            intensity={0.3}
+            color="#C4A882"
+          />
           <OrbitControls
             enablePan={false}
             minDistance={5}
@@ -118,14 +128,21 @@ export default function ConduitViewer() {
             autoRotateSpeed={0.4}
           />
           <TubeGeometry viewMode={viewMode} />
-          <InternalSystems showHalbach={showHalbach} showLIM={showLIM} viewMode={viewMode} />
+          <InternalSystems
+            showHalbach={showHalbach}
+            showLIM={showLIM}
+            viewMode={viewMode}
+          />
           <ExpansionJoints show={showExpansionJoints} viewMode={viewMode} />
           <VacuumPumpStation show={showPumpStations} viewMode={viewMode} />
           <FiberOpticCable show={showFiberOptic} />
           <PylonStructure show={showPylons} />
           <SolarFilm show={showSolar} viewMode={viewMode} />
           <CameraController target={cameraTarget} />
-          <HotspotLayer activeId={activeHotspot} onHotspotClick={handleHotspotClick} />
+          <HotspotLayer
+            activeId={activeHotspot}
+            onHotspotClick={handleHotspotClick}
+          />
           <ZoomDetailManager />
         </Suspense>
       </Canvas>
@@ -141,7 +158,7 @@ export default function ConduitViewer() {
           fontSize: "9px",
           letterSpacing: "0.25em",
           textTransform: "uppercase",
-          color: "rgba(255,255,255,0.25)",
+          color: "var(--muted-more)",
           fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
           pointerEvents: "none",
         }}
@@ -161,13 +178,48 @@ export default function ConduitViewer() {
         }}
       >
         {[
-          { key: "halbach", label: "HALBACH TRACK", active: showHalbach, toggle: () => setShowHalbach((v) => !v) },
-          { key: "lim", label: "LIM STATOR", active: showLIM, toggle: () => setShowLIM((v) => !v) },
-          { key: "joints", label: "EXPANSION JOINTS", active: showExpansionJoints, toggle: () => setShowExpansionJoints((v) => !v) },
-          { key: "pumps", label: "PUMP STATIONS", active: showPumpStations, toggle: () => setShowPumpStations((v) => !v) },
-          { key: "fiber", label: "FIBER OPTIC", active: showFiberOptic, toggle: () => setShowFiberOptic((v) => !v) },
-          { key: "pylons", label: "PYLONS", active: showPylons, toggle: () => setShowPylons((v) => !v) },
-          { key: "solar", label: "SOLAR FILM", active: showSolar, toggle: () => setShowSolar((v) => !v) },
+          {
+            key: "halbach",
+            label: "HALBACH TRACK",
+            active: showHalbach,
+            toggle: () => setShowHalbach((v) => !v),
+          },
+          {
+            key: "lim",
+            label: "LIM STATOR",
+            active: showLIM,
+            toggle: () => setShowLIM((v) => !v),
+          },
+          {
+            key: "joints",
+            label: "EXPANSION JOINTS",
+            active: showExpansionJoints,
+            toggle: () => setShowExpansionJoints((v) => !v),
+          },
+          {
+            key: "pumps",
+            label: "PUMP STATIONS",
+            active: showPumpStations,
+            toggle: () => setShowPumpStations((v) => !v),
+          },
+          {
+            key: "fiber",
+            label: "FIBER OPTIC",
+            active: showFiberOptic,
+            toggle: () => setShowFiberOptic((v) => !v),
+          },
+          {
+            key: "pylons",
+            label: "PYLONS",
+            active: showPylons,
+            toggle: () => setShowPylons((v) => !v),
+          },
+          {
+            key: "solar",
+            label: "SOLAR FILM",
+            active: showSolar,
+            toggle: () => setShowSolar((v) => !v),
+          },
         ].map(({ key, label, active, toggle }) => (
           <button
             key={key}
@@ -178,9 +230,9 @@ export default function ConduitViewer() {
               letterSpacing: "0.15em",
               textTransform: "uppercase",
               fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-              background: active ? "rgba(196,168,130,0.12)" : "rgba(255,255,255,0.04)",
-              color: active ? "#C4A882" : "rgba(255,255,255,0.3)",
-              border: `1px solid ${active ? "rgba(196,168,130,0.3)" : "rgba(255,255,255,0.08)"}`,
+              background: active ? "var(--muted-more)" : "var(--border)",
+              color: active ? "var(--color-accent)" : "var(--muted)",
+              border: `1px solid ${active ? "var(--color-accent)" : "var(--border)"}`,
               cursor: "pointer",
               transition: "all 0.15s",
             }}

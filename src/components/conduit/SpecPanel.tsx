@@ -25,12 +25,13 @@ export default function SpecPanel({ hotspotId, onClose }: SpecPanelProps) {
             right: 0,
             width: "300px",
             height: "100%",
-            background: "rgba(10,10,10,0.96)",
-            borderLeft: "1px solid rgba(255,255,255,0.1)",
+            background: "var(--card-bg)",
+            borderLeft: "1px solid var(--border)",
             padding: "24px",
             overflowY: "auto",
             zIndex: 20,
             fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+            opacity: 0.98,
           }}
         >
           {/* Close button */}
@@ -42,7 +43,7 @@ export default function SpecPanel({ hotspotId, onClose }: SpecPanelProps) {
               right: "16px",
               background: "none",
               border: "none",
-              color: "rgba(255,255,255,0.4)",
+              color: "var(--muted)",
               cursor: "pointer",
               fontSize: "18px",
               lineHeight: 1,
@@ -58,7 +59,7 @@ export default function SpecPanel({ hotspotId, onClose }: SpecPanelProps) {
             style={{
               fontSize: "9px",
               letterSpacing: "0.3em",
-              color: "#C4A882",
+              color: "var(--color-accent)",
               textTransform: "uppercase",
               marginBottom: "12px",
               paddingRight: "24px",
@@ -67,13 +68,18 @@ export default function SpecPanel({ hotspotId, onClose }: SpecPanelProps) {
             FH-DX-I // {hotspot.id} {hotspot.label}
           </p>
 
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", marginBottom: "16px" }} />
+          <div
+            style={{
+              borderTop: "1px solid var(--border)",
+              marginBottom: "16px",
+            }}
+          />
 
           {/* Explanation */}
           <p
             style={{
               fontSize: "11px",
-              color: "rgba(255,255,255,0.55)",
+              color: "var(--muted)",
               lineHeight: 1.75,
               marginBottom: "20px",
             }}
@@ -81,7 +87,12 @@ export default function SpecPanel({ hotspotId, onClose }: SpecPanelProps) {
             {hotspot.explanation}
           </p>
 
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", marginBottom: "12px" }} />
+          <div
+            style={{
+              borderTop: "1px solid var(--border)",
+              marginBottom: "12px",
+            }}
+          />
 
           {/* Data table */}
           {hotspot.data.map((row) => (
@@ -92,16 +103,34 @@ export default function SpecPanel({ hotspotId, onClose }: SpecPanelProps) {
                 justifyContent: "space-between",
                 alignItems: "baseline",
                 padding: "7px 0",
-                borderBottom: "1px solid rgba(255,255,255,0.05)",
+                borderBottom: "1px solid var(--border)",
               }}
             >
-              <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)", letterSpacing: "0.04em" }}>
+              <span
+                style={{
+                  fontSize: "10px",
+                  color: "var(--muted)",
+                  letterSpacing: "0.04em",
+                }}
+              >
                 {row.label}
               </span>
-              <span style={{ fontSize: "11px", color: "#FFFFFF", letterSpacing: "0.04em" }}>
+              <span
+                style={{
+                  fontSize: "11px",
+                  color: "var(--foreground)",
+                  letterSpacing: "0.04em",
+                }}
+              >
                 {row.value}
                 {row.unit && (
-                  <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "9px", marginLeft: "4px" }}>
+                  <span
+                    style={{
+                      color: "var(--muted-more)",
+                      fontSize: "9px",
+                      marginLeft: "4px",
+                    }}
+                  >
                     {row.unit}
                   </span>
                 )}
@@ -110,26 +139,45 @@ export default function SpecPanel({ hotspotId, onClose }: SpecPanelProps) {
           ))}
 
           {/* Why it matters */}
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", marginTop: "16px", paddingTop: "12px" }}>
+          <div
+            style={{
+              borderTop: "1px solid var(--border)",
+              marginTop: "16px",
+              paddingTop: "12px",
+            }}
+          >
             <p
               style={{
                 fontSize: "9px",
                 letterSpacing: "0.2em",
-                color: "#C4A882",
+                color: "var(--color-accent)",
                 textTransform: "uppercase",
                 marginBottom: "8px",
               }}
             >
               Why it matters
             </p>
-            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>
+            <p
+              style={{
+                fontSize: "11px",
+                color: "var(--muted)",
+                lineHeight: 1.7,
+              }}
+            >
               {hotspot.whyItMatters}
             </p>
           </div>
 
           {/* Source */}
           <div style={{ marginTop: "16px" }}>
-            <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.08em", lineHeight: 1.5 }}>
+            <p
+              style={{
+                fontSize: "9px",
+                color: "var(--muted-more)",
+                letterSpacing: "0.08em",
+                lineHeight: 1.5,
+              }}
+            >
               Source: {hotspot.source}
             </p>
           </div>

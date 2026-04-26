@@ -14,7 +14,7 @@ function Section({
           fontSize: "9px",
           letterSpacing: "0.3em",
           textTransform: "uppercase",
-          color: "#C4A882",
+          color: "var(--color-accent)",
           fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
           marginBottom: "16px",
         }}
@@ -30,20 +30,36 @@ function Section({
               justifyContent: "space-between",
               alignItems: "baseline",
               padding: "10px 0",
-              borderBottom: "1px solid rgba(255,255,255,0.06)",
+              borderBottom: "1px solid var(--border)",
               fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
             }}
           >
-            <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)" }}>{row.label}</span>
+            <span style={{ fontSize: "11px", color: "var(--muted)" }}>
+              {row.label}
+            </span>
             <div style={{ textAlign: "right" }}>
-              <span style={{ fontSize: "13px", color: "#FFFFFF" }}>{row.value}</span>
+              <span style={{ fontSize: "13px", color: "var(--foreground)" }}>
+                {row.value}
+              </span>
               {row.unit && (
-                <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", marginLeft: "4px" }}>
+                <span
+                  style={{
+                    fontSize: "10px",
+                    color: "var(--muted)",
+                    marginLeft: "4px",
+                  }}
+                >
                   {row.unit}
                 </span>
               )}
               {row.source && (
-                <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.2)", marginTop: "2px" }}>
+                <div
+                  style={{
+                    fontSize: "9px",
+                    color: "var(--muted-more)",
+                    marginTop: "2px",
+                  }}
+                >
                   {row.source}
                 </div>
               )}
@@ -65,13 +81,18 @@ export default function ConduitSpecSheet() {
         fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
       }}
     >
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", marginBottom: "48px" }} />
+      <div
+        style={{
+          borderTop: "1px solid var(--border)",
+          marginBottom: "48px",
+        }}
+      />
       <p
         style={{
           fontSize: "9px",
           letterSpacing: "0.3em",
           textTransform: "uppercase",
-          color: "rgba(255,255,255,0.25)",
+          color: "var(--muted-more)",
           marginBottom: "48px",
         }}
       >
