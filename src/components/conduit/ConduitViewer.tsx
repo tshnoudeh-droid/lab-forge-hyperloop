@@ -9,6 +9,8 @@ import ViewControls from "./ViewControls";
 import ExpansionJoints from "./ExpansionJoints";
 import VacuumPumpStation from "./VacuumPumpStation";
 import FiberOpticCable from "./FiberOpticCable";
+import PylonStructure from "./PylonStructure";
+import SolarFilm from "./SolarFilm";
 import type { ViewMode } from "./types";
 
 export default function ConduitViewer() {
@@ -18,6 +20,8 @@ export default function ConduitViewer() {
   const [showExpansionJoints, setShowExpansionJoints] = useState(true);
   const [showPumpStations, setShowPumpStations] = useState(true);
   const [showFiberOptic, setShowFiberOptic] = useState(true);
+  const [showPylons, setShowPylons] = useState(true);
+  const [showSolar, setShowSolar] = useState(true);
 
   return (
     <div style={{ width: "100%", height: "600px", position: "relative" }}>
@@ -43,6 +47,8 @@ export default function ConduitViewer() {
           <ExpansionJoints show={showExpansionJoints} viewMode={viewMode} />
           <VacuumPumpStation show={showPumpStations} viewMode={viewMode} />
           <FiberOpticCable show={showFiberOptic} />
+          <PylonStructure show={showPylons} />
+          <SolarFilm show={showSolar} viewMode={viewMode} />
         </Suspense>
       </Canvas>
       <div
@@ -76,6 +82,8 @@ export default function ConduitViewer() {
           { key: "joints", label: "EXPANSION JOINTS", active: showExpansionJoints, toggle: () => setShowExpansionJoints((v) => !v) },
           { key: "pumps", label: "PUMP STATIONS", active: showPumpStations, toggle: () => setShowPumpStations((v) => !v) },
           { key: "fiber", label: "FIBER OPTIC", active: showFiberOptic, toggle: () => setShowFiberOptic((v) => !v) },
+          { key: "pylons", label: "PYLONS", active: showPylons, toggle: () => setShowPylons((v) => !v) },
+          { key: "solar", label: "SOLAR FILM", active: showSolar, toggle: () => setShowSolar((v) => !v) },
         ].map(({ key, label, active, toggle }) => (
           <button
             key={key}
