@@ -13,6 +13,7 @@ import FiberOpticCable from "./FiberOpticCable";
 import PylonStructure from "./PylonStructure";
 import SolarFilm from "./SolarFilm";
 import HotspotLayer from "./HotspotLayer";
+import SpecPanel from "./SpecPanel";
 import type { ViewMode } from "./types";
 
 function CameraController({ target }: { target: [number, number, number] | null }) {
@@ -48,6 +49,12 @@ export default function ConduitViewer() {
     setSpecPanelOpen(true);
   }
 
+  function handlePanelClose() {
+    setSpecPanelOpen(false);
+    setActiveHotspot(null);
+    setCameraTarget(null);
+  }
+
   return (
     <div style={{ width: "100%", height: "600px", position: "relative" }}>
       <ViewControls mode={viewMode} onChange={setViewMode} />
@@ -78,6 +85,10 @@ export default function ConduitViewer() {
           <HotspotLayer activeId={activeHotspot} onHotspotClick={handleHotspotClick} />
         </Suspense>
       </Canvas>
+      <SpecPanel
+        hotspotId={specPanelOpen ? activeHotspot : null}
+        onClose={handlePanelClose}
+      />
       <div
         style={{
           position: "absolute",
