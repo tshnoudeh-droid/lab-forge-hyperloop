@@ -13,6 +13,7 @@ import FiberOpticCable from "./FiberOpticCable";
 import PylonStructure from "./PylonStructure";
 import SolarFilm from "./SolarFilm";
 import HotspotLayer from "./HotspotLayer";
+import ZoomDetailManager from "./ZoomDetailManager";
 import SpecPanel from "./SpecPanel";
 import type { ViewMode } from "./types";
 
@@ -83,6 +84,7 @@ export default function ConduitViewer() {
           <SolarFilm show={showSolar} viewMode={viewMode} />
           <CameraController target={cameraTarget} />
           <HotspotLayer activeId={activeHotspot} onHotspotClick={handleHotspotClick} />
+          <ZoomDetailManager />
         </Suspense>
       </Canvas>
       <SpecPanel
