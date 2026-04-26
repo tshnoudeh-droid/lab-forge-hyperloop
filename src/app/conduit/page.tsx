@@ -1,4 +1,5 @@
 import ConduitViewerClient from "@/components/conduit/ConduitViewerClient";
+import ConduitSpecSheet from "@/components/conduit/ConduitSpecSheet";
 
 export const metadata = {
   title: "FH-DX-I Conduit — Forge Hyperloop Lab",
@@ -42,6 +43,7 @@ export default function ConduitPage() {
           </p>
         </div>
         <ConduitViewerClient />
+        <ConduitSpecSheet />
       </div>
     </main>
   );
