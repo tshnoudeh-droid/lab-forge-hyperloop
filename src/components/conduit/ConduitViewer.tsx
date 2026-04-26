@@ -1,8 +1,9 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useRef } from "react";
+import * as THREE from "three";
 import TubeGeometry from "./TubeGeometry";
 import InternalSystems from "./InternalSystems";
 import ViewControls from "./ViewControls";
@@ -11,10 +12,28 @@ import VacuumPumpStation from "./VacuumPumpStation";
 import FiberOpticCable from "./FiberOpticCable";
 import PylonStructure from "./PylonStructure";
 import SolarFilm from "./SolarFilm";
+import HotspotLayer from "./HotspotLayer";
 import type { ViewMode } from "./types";
+
+function CameraController({ target }: { target: [number, number, number] | null }) {
+  const { camera } = useThree();
+  const targetVec = useRef(new THREE.Vector3());
+
+  useFrame(() => {
+    if (!target) return;
+    targetVec.current.set(target[0], target[1], target[2]);
+    camera.position.lerp(targetVec.current, 0.05);
+    camera.lookAt(0, 0, 0);
+  });
+
+  return null;
+}
 
 export default function ConduitViewer() {
   const [viewMode, setViewMode] = useState<ViewMode>("cutaway");
+  const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
+  const [cameraTarget, setCameraTarget] = useState<[number, number, number] | null>(null);
+  const [specPanelOpen, setSpecPanelOpen] = useState(false);
   const [showHalbach, setShowHalbach] = useState(true);
   const [showLIM, setShowLIM] = useState(true);
   const [showExpansionJoints, setShowExpansionJoints] = useState(true);
@@ -22,6 +41,12 @@ export default function ConduitViewer() {
   const [showFiberOptic, setShowFiberOptic] = useState(true);
   const [showPylons, setShowPylons] = useState(true);
   const [showSolar, setShowSolar] = useState(true);
+
+  function handleHotspotClick(id: string, preset: [number, number, number]) {
+    setActiveHotspot(id);
+    setCameraTarget(preset);
+    setSpecPanelOpen(true);
+  }
 
   return (
     <div style={{ width: "100%", height: "600px", position: "relative" }}>
@@ -49,6 +74,8 @@ export default function ConduitViewer() {
           <FiberOpticCable show={showFiberOptic} />
           <PylonStructure show={showPylons} />
           <SolarFilm show={showSolar} viewMode={viewMode} />
+          <CameraController target={cameraTarget} />
+          <HotspotLayer activeId={activeHotspot} onHotspotClick={handleHotspotClick} />
         </Suspense>
       </Canvas>
       <div
