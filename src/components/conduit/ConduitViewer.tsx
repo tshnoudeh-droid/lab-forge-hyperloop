@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Html } from "@react-three/drei";
 import { Suspense, useState, useRef } from "react";
 import * as THREE from "three";
 import TubeGeometry from "./TubeGeometry";
@@ -57,14 +57,56 @@ export default function ConduitViewer() {
   }
 
   return (
-    <div style={{ width: "100%", height: "600px", position: "relative" }}>
+    <div style={{ width: "100%", height: "clamp(400px, 55vh, 600px)", position: "relative" }}>
       <ViewControls mode={viewMode} onChange={setViewMode} />
+      <button
+        onClick={() => {
+          setCameraTarget([12, 6, 20]);
+          setActiveHotspot(null);
+          setSpecPanelOpen(false);
+        }}
+        style={{
+          position: "absolute",
+          top: "16px",
+          right: "16px",
+          padding: "6px 12px",
+          fontSize: "9px",
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+          background: "rgba(255,255,255,0.05)",
+          color: "rgba(255,255,255,0.5)",
+          border: "none",
+          cursor: "pointer",
+          zIndex: 10,
+          transition: "color 0.15s",
+        }}
+      >
+        RESET
+      </button>
       <Canvas
         camera={{ position: [12, 6, 20], fov: 45, near: 0.1, far: 1000 }}
         style={{ background: "#0A0A0A" }}
         gl={{ antialias: true, localClippingEnabled: true }}
       >
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <Html center>
+              <span
+                style={{
+                  fontSize: "10px",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.3)",
+                  fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Loading
+              </span>
+            </Html>
+          }
+        >
           <ambientLight intensity={0.4} />
           <directionalLight position={[10, 20, 10]} intensity={1.2} />
           <directionalLight position={[-10, -5, -10]} intensity={0.3} color="#C4A882" />
@@ -114,6 +156,8 @@ export default function ConduitViewer() {
           left: "16px",
           display: "flex",
           gap: "2px",
+          flexWrap: "wrap",
+          maxWidth: "calc(100% - 32px)",
         }}
       >
         {[
