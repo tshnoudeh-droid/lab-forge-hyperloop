@@ -6,12 +6,18 @@ import { Suspense, useState } from "react";
 import TubeGeometry from "./TubeGeometry";
 import InternalSystems from "./InternalSystems";
 import ViewControls from "./ViewControls";
+import ExpansionJoints from "./ExpansionJoints";
+import VacuumPumpStation from "./VacuumPumpStation";
+import FiberOpticCable from "./FiberOpticCable";
 import type { ViewMode } from "./types";
 
 export default function ConduitViewer() {
   const [viewMode, setViewMode] = useState<ViewMode>("cutaway");
   const [showHalbach, setShowHalbach] = useState(true);
   const [showLIM, setShowLIM] = useState(true);
+  const [showExpansionJoints, setShowExpansionJoints] = useState(true);
+  const [showPumpStations, setShowPumpStations] = useState(true);
+  const [showFiberOptic, setShowFiberOptic] = useState(true);
 
   return (
     <div style={{ width: "100%", height: "600px", position: "relative" }}>
@@ -34,6 +40,9 @@ export default function ConduitViewer() {
           />
           <TubeGeometry viewMode={viewMode} />
           <InternalSystems showHalbach={showHalbach} showLIM={showLIM} viewMode={viewMode} />
+          <ExpansionJoints show={showExpansionJoints} viewMode={viewMode} />
+          <VacuumPumpStation show={showPumpStations} viewMode={viewMode} />
+          <FiberOpticCable show={showFiberOptic} />
         </Suspense>
       </Canvas>
       <div
@@ -64,6 +73,9 @@ export default function ConduitViewer() {
         {[
           { key: "halbach", label: "HALBACH TRACK", active: showHalbach, toggle: () => setShowHalbach((v) => !v) },
           { key: "lim", label: "LIM STATOR", active: showLIM, toggle: () => setShowLIM((v) => !v) },
+          { key: "joints", label: "EXPANSION JOINTS", active: showExpansionJoints, toggle: () => setShowExpansionJoints((v) => !v) },
+          { key: "pumps", label: "PUMP STATIONS", active: showPumpStations, toggle: () => setShowPumpStations((v) => !v) },
+          { key: "fiber", label: "FIBER OPTIC", active: showFiberOptic, toggle: () => setShowFiberOptic((v) => !v) },
         ].map(({ key, label, active, toggle }) => (
           <button
             key={key}
