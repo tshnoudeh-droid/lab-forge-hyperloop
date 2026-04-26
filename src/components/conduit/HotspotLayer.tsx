@@ -16,7 +16,7 @@ export default function HotspotLayer({ activeId, onHotspotClick }: HotspotLayerP
           {/* Small sphere marker */}
           <mesh>
             <sphereGeometry args={[0.06, 8, 8]} />
-            <meshBasicMaterial color={activeId === h.id ? "#C4A882" : "rgba(255,255,255,0.8)"} />
+            <meshBasicMaterial color={activeId === h.id ? "#C4A882" : "#FFFFFF"} />
           </mesh>
           {/* Billboarded HTML label */}
           <Html
