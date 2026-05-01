@@ -167,17 +167,18 @@ export default function ConduitViewer() {
               autoRotate
               autoRotateSpeed={0.4}
             />
-            <TubeGeometry viewMode={viewMode} />
+            <TubeGeometry viewMode={viewMode} activeHotspot={activeHotspot} />
             <InternalSystems
               showHalbach={layers.halbach}
               showLIM={layers.lim}
               viewMode={viewMode}
+              activeHotspot={activeHotspot}
             />
-            <ExpansionJoints show={layers.joints} viewMode={viewMode} />
-            <VacuumPumpStation show={layers.pumps} viewMode={viewMode} />
-            <FiberOpticCable show={layers.fiber} />
-            <PylonStructure show={layers.pylons} />
-            <SolarFilm show={layers.solar} viewMode={viewMode} />
+            <ExpansionJoints show={layers.joints} viewMode={viewMode} activeHotspot={activeHotspot} />
+            <VacuumPumpStation show={layers.pumps} viewMode={viewMode} activeHotspot={activeHotspot} />
+            <FiberOpticCable show={layers.fiber} activeHotspot={activeHotspot} />
+            <PylonStructure show={layers.pylons} activeHotspot={activeHotspot} />
+            <SolarFilm show={layers.solar} viewMode={viewMode} activeHotspot={activeHotspot} />
             <CameraController target={cameraTarget} onReached={handleCameraReached} />
             <HotspotLayer
               activeId={activeHotspot}

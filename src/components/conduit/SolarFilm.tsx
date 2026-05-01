@@ -6,19 +6,21 @@ import type { ViewMode } from "./types";
 interface SolarFilmProps {
   show: boolean;
   viewMode: ViewMode;
+  activeHotspot?: string | null;
 }
 
-export default function SolarFilm({ show, viewMode }: SolarFilmProps) {
+export default function SolarFilm({ show, viewMode, activeHotspot }: SolarFilmProps) {
   if (!show || viewMode === "section") return null;
+  const highlighted = activeHotspot === "09";
   return (
-    <mesh position={[0, TUBE.outerRadius + 0.005, 0]} rotation={[Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[0.8, TUBE.length]} />
+    <mesh position={[0, TUBE.outerRadius + 0.006, 0]} rotation={[Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[1.0, TUBE.length]} />
       <meshStandardMaterial
-        color="#C4A882"
-        emissive="#C4A882"
-        emissiveIntensity={0.08}
+        color={highlighted ? "#d4b892" : "#C4A882"}
+        emissive={highlighted ? "#C4A882" : "#C4A882"}
+        emissiveIntensity={highlighted ? 0.6 : 0.08}
         transparent
-        opacity={0.75}
+        opacity={highlighted ? 0.95 : 0.75}
         side={2}
       />
     </mesh>

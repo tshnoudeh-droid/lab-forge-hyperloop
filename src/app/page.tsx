@@ -117,9 +117,9 @@ export default function Home() {
             fontFamily: font,
           }}
         >
-          Engineering specifications
+          The physical design blueprint
           <br />
-          for the DX-I program
+          for a complete hyperloop system
         </motion.p>
 
         {/* Bottom accent bar */}
@@ -179,9 +179,10 @@ export default function Home() {
                 letterSpacing: "0.01em",
               }}
             >
-              Forge Hyperloop Lab is the engineering core of the DX-I program.
-              A physics-first, software-defined approach to hyperloop design.
-              Every subsystem modeled at 1:1 scale with real geometry and verified physics.
+              Forge Hyperloop Lab is the master engineering blueprint.
+              A full-system, physics-first design facility for hyperloop technology.
+              Every subsystem at 1:1 scale. Every number verified.
+              Design cycles run inside the Lab — DX-I is the first.
             </p>
           </div>
         </FadeIn>
@@ -218,7 +219,7 @@ export default function Home() {
                   fontFamily: font,
                 }}
               >
-                02 // Program
+                02 // Design Cycle
               </p>
               <p
                 style={{
@@ -230,7 +231,7 @@ export default function Home() {
                   fontWeight: 600,
                 }}
               >
-                FH-DX-I
+                DX-I
               </p>
             </div>
             <div style={{ flex: "1 1 300px" }}>
@@ -244,7 +245,7 @@ export default function Home() {
                   fontFamily: font,
                 }}
               >
-                The DX-I program.
+                Design Cycle One.
               </h2>
               <p
                 style={{
@@ -257,8 +258,8 @@ export default function Home() {
                 }}
               >
                 Three interdependent subsystems. A complete ground-up engineering
-                model of a functional hyperloop corridor. Real physics. Real geometry.
-                No simplifications.
+                model of a full hyperloop corridor run inside the Lab.
+                Real physics. Real geometry. No simplifications.
               </p>
             </div>
           </div>

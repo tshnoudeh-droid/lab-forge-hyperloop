@@ -60,7 +60,7 @@ export default function ConduitPage() {
           </p>
           <h1
             style={{
-              fontSize: "56px",
+              fontSize: "46px",
               fontWeight: 700,
               letterSpacing: "0.06em",
               color: "var(--foreground)",
@@ -73,11 +73,11 @@ export default function ConduitPage() {
           </h1>
           <p
             style={{
-              fontSize: "17px",
+              fontSize: "15px",
               color: "var(--muted)",
               lineHeight: 1.75,
-              maxWidth: "600px",
-              marginBottom: "44px",
+              maxWidth: "580px",
+              marginBottom: "40px",
               fontFamily: font,
               letterSpacing: "0.01em",
             }}
@@ -122,7 +122,7 @@ export default function ConduitPage() {
                 </p>
                 <p
                   style={{
-                    fontSize: "22px",
+                    fontSize: "18px",
                     fontWeight: 600,
                     color: "var(--foreground)",
                     letterSpacing: "0.02em",

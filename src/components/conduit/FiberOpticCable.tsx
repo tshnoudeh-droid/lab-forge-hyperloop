@@ -5,11 +5,13 @@ import { TUBE } from "./data/conduit-specs";
 
 interface FiberOpticCableProps {
   show: boolean;
+  activeHotspot?: string | null;
 }
 
-export default function FiberOpticCable({ show }: FiberOpticCableProps) {
+export default function FiberOpticCable({ show, activeHotspot }: FiberOpticCableProps) {
   if (!show) return null;
-  const Y = TUBE.outerRadius + 0.015;
+  const highlighted = activeHotspot === "04";
+  const Y = TUBE.outerRadius + 0.02;
   const HALF = TUBE.length / 2;
   return (
     <Line
@@ -17,8 +19,8 @@ export default function FiberOpticCable({ show }: FiberOpticCableProps) {
         [0, Y, -HALF],
         [0, Y, HALF],
       ]}
-      color="#ffaa44"
-      lineWidth={1.5}
+      color={highlighted ? "#ffffff" : "#ffaa44"}
+      lineWidth={highlighted ? 3.5 : 1.5}
     />
   );
 }

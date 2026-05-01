@@ -58,7 +58,7 @@ export default function Shell() {
           </p>
           <h1
             style={{
-              fontSize: "56px",
+              fontSize: "46px",
               fontWeight: 700,
               letterSpacing: "0.06em",
               color: "var(--foreground)",
@@ -71,7 +71,7 @@ export default function Shell() {
           </h1>
           <p
             style={{
-              fontSize: "17px",
+              fontSize: "15px",
               color: "var(--muted)",
               lineHeight: 1.75,
               maxWidth: "600px",
@@ -113,7 +113,7 @@ export default function Shell() {
                 </p>
                 <p
                   style={{
-                    fontSize: "22px",
+                    fontSize: "18px",
                     fontWeight: 600,
                     color: "var(--foreground)",
                     letterSpacing: "0.02em",
