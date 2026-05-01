@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import FadeIn from "@/components/FadeIn";
+import { TiltCard } from "@/components/ui/tilt-card";
 
 const subsystems = [
   {
@@ -228,6 +229,7 @@ export default function Home() {
             const isActive = s.status === "ACTIVE";
             const card = (
               <FadeIn delay={i * 0.08}>
+                <TiltCard tiltLimit={8} scale={1.02} spotlight={true} style={{ height: "100%" }}>
                 <div
                   style={{
                     padding: "32px",
@@ -281,6 +283,7 @@ export default function Home() {
                     {s.status}
                   </span>
                 </div>
+                </TiltCard>
               </FadeIn>
             );
 

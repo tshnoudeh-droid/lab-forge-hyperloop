@@ -1,6 +1,7 @@
 "use client";
 
 import type { ViewMode } from "./types";
+import { Button } from "@/components/ui/button";
 
 interface ViewControlsProps {
   mode: ViewMode;
@@ -22,9 +23,11 @@ export default function ViewControls({ mode, onChange }: ViewControlsProps) {
       }}
     >
       {MODES.map((m) => (
-        <button
+        <Button
           key={m}
+          variant="ghost"
           onClick={() => onChange(m)}
+          className="rounded-none"
           style={{
             padding: "6px 12px",
             fontSize: "9px",
@@ -33,13 +36,12 @@ export default function ViewControls({ mode, onChange }: ViewControlsProps) {
             fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
             background: mode === m ? "var(--color-accent)" : "var(--border)",
             color: mode === m ? "var(--background)" : "var(--muted)",
-            border: "none",
-            cursor: "pointer",
+            height: "auto",
             transition: "all 0.15s",
           }}
         >
           {m}
-        </button>
+        </Button>
       ))}
     </div>
   );

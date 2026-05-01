@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTheme } from "./ThemeProvider";
+import { Button } from "./ui/button";
 
 export default function Nav() {
   const { theme, toggleTheme } = useTheme();
@@ -58,24 +59,24 @@ export default function Nav() {
             {label}
           </Link>
         ))}
-        <button
+        <Button
+          variant="ghost"
           onClick={toggleTheme}
+          aria-label="Toggle Theme"
+          className="rounded-none"
           style={{
-            background: "none",
-            border: "1px solid var(--border)",
-            cursor: "pointer",
             fontSize: "9px",
             letterSpacing: "0.2em",
             textTransform: "uppercase",
             fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
             color: "var(--muted)",
             padding: "5px 10px",
-            transition: "color 0.2s",
+            height: "auto",
+            border: "1px solid var(--border)",
           }}
-          aria-label="Toggle Theme"
         >
           {theme === "dark" ? "LIGHT" : "DARK"}
-        </button>
+        </Button>
       </div>
     </nav>
   );

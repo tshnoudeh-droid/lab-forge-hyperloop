@@ -16,6 +16,7 @@ import HotspotLayer from "./HotspotLayer";
 import ZoomDetailManager from "./ZoomDetailManager";
 import SpecPanel from "./SpecPanel";
 import type { ViewMode } from "./types";
+import { Button } from "@/components/ui/button";
 
 function CameraController({ target }: { target: [number, number, number] | null }) {
   const { camera } = useThree();
@@ -65,14 +66,15 @@ export default function ConduitViewer() {
       }}
     >
       <ViewControls mode={viewMode} onChange={setViewMode} />
-      <button
+      <Button
+        variant="ghost"
+        className="rounded-none absolute"
         onClick={() => {
           setCameraTarget([12, 6, 20]);
           setActiveHotspot(null);
           setSpecPanelOpen(false);
         }}
         style={{
-          position: "absolute",
           top: "16px",
           right: "16px",
           padding: "6px 12px",
@@ -82,14 +84,13 @@ export default function ConduitViewer() {
           fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
           background: "var(--border)",
           color: "var(--muted)",
-          border: "none",
-          cursor: "pointer",
+          height: "auto",
           zIndex: 10,
           transition: "color 0.15s",
         }}
       >
         RESET
-      </button>
+      </Button>
       <Canvas
         camera={{ position: [12, 6, 20], fov: 45, near: 0.1, far: 1000 }}
         style={{ background: "var(--background)" }}
@@ -218,9 +219,11 @@ export default function ConduitViewer() {
             toggle: () => setShowSolar((v) => !v),
           },
         ].map(({ key, label, active, toggle }) => (
-          <button
+          <Button
             key={key}
+            variant="ghost"
             onClick={toggle}
+            className="rounded-none"
             style={{
               padding: "5px 10px",
               fontSize: "9px",
@@ -230,12 +233,12 @@ export default function ConduitViewer() {
               background: active ? "var(--muted-more)" : "var(--border)",
               color: active ? "var(--color-accent)" : "var(--muted)",
               border: `1px solid ${active ? "var(--color-accent)" : "var(--border)"}`,
-              cursor: "pointer",
+              height: "auto",
               transition: "all 0.15s",
             }}
           >
             {label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>
