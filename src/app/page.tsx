@@ -50,22 +50,42 @@ export default function Home() {
           justifyContent: "center",
           textAlign: "center",
           padding: "0 32px",
+          position: "relative",
         }}
       >
-        <motion.p
+        {/* Subtle accent line */}
+        <div style={{
+          position: "absolute",
+          top: "50%",
+          left: "32px",
+          right: "32px",
+          height: "1px",
+          backgroundColor: "var(--color-accent)",
+          opacity: 0.15,
+          pointerEvents: "none",
+        }} />
+
+        <motion.a
+          href="https://forgehyperloop.com"
+          target="_blank"
+          rel="noopener noreferrer"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.25, 0, 0, 1] }}
           style={{
-            fontSize: "11px",
+            fontSize: "13px",
             letterSpacing: "0.35em",
             textTransform: "uppercase",
-            color: "var(--muted)",
+            color: "var(--color-accent)",
             marginBottom: "20px",
+            fontFamily: font,
+            fontWeight: 500,
+            textDecoration: "none",
+            cursor: "default",
           }}
         >
           Forge Hyperloop
-        </motion.p>
+        </motion.a>
 
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
@@ -78,6 +98,7 @@ export default function Home() {
             letterSpacing: "-0.03em",
             color: "var(--foreground)",
             marginBottom: "28px",
+            fontFamily: font,
           }}
         >
           LAB
@@ -88,17 +109,34 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.28, ease: [0.25, 0, 0, 1] }}
           style={{
-            fontSize: "11px",
-            letterSpacing: "0.25em",
+            fontSize: "13px",
+            letterSpacing: "0.2em",
             textTransform: "uppercase",
             color: "var(--muted)",
             lineHeight: 1.8,
+            fontFamily: font,
           }}
         >
           Engineering specifications
           <br />
           for the DX-I program
         </motion.p>
+
+        {/* Bottom accent bar */}
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ duration: 1.2, delay: 0.5, ease: [0.25, 0, 0, 1] }}
+          style={{
+            position: "absolute",
+            bottom: "48px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "48px",
+            height: "2px",
+            backgroundColor: "var(--color-accent)",
+          }}
+        />
       </section>
 
       {/* MISSION */}
@@ -112,30 +150,33 @@ export default function Home() {
         <FadeIn>
           <div
             style={{
-              borderTop: "1px solid var(--border)",
+              borderTop: "2px solid var(--color-accent)",
               paddingTop: "56px",
             }}
           >
             <p
               style={{
-                fontSize: "10px",
+                fontSize: "11px",
                 letterSpacing: "0.3em",
                 textTransform: "uppercase",
-                color: "var(--muted-more)",
+                color: "var(--color-accent)",
                 marginBottom: "40px",
                 textAlign: "center",
+                fontFamily: font,
+                fontWeight: 500,
               }}
             >
               01 // Mission
             </p>
             <p
               style={{
-                fontSize: "19px",
+                fontSize: "20px",
                 fontWeight: 400,
                 lineHeight: 1.7,
                 color: "var(--foreground)",
                 textAlign: "center",
-                fontFamily: "var(--font-libre-baskerville), Georgia, serif",
+                fontFamily: font,
+                letterSpacing: "0.01em",
               }}
             >
               Forge Hyperloop Lab is the engineering core of the DX-I program.
@@ -169,21 +210,24 @@ export default function Home() {
             <div style={{ flex: "0 0 auto" }}>
               <p
                 style={{
-                  fontSize: "10px",
+                  fontSize: "11px",
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
-                  color: "var(--muted-more)",
+                  color: "var(--muted)",
                   marginBottom: "8px",
+                  fontFamily: font,
                 }}
               >
                 02 // Program
               </p>
               <p
                 style={{
-                  fontSize: "10px",
+                  fontSize: "13px",
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
                   color: "var(--color-accent)",
+                  fontFamily: font,
+                  fontWeight: 600,
                 }}
               >
                 FH-DX-I
@@ -192,22 +236,24 @@ export default function Home() {
             <div style={{ flex: "1 1 300px" }}>
               <h2
                 style={{
-                  fontSize: "22px",
-                  fontWeight: 500,
-                  letterSpacing: "0.05em",
+                  fontSize: "26px",
+                  fontWeight: 600,
+                  letterSpacing: "0.03em",
                   color: "var(--foreground)",
                   marginBottom: "14px",
+                  fontFamily: font,
                 }}
               >
                 The DX-I program.
               </h2>
               <p
                 style={{
-                  fontSize: "14px",
+                  fontSize: "16px",
                   color: "var(--muted)",
                   lineHeight: 1.75,
                   maxWidth: "480px",
-                  fontFamily: "var(--font-libre-baskerville), Georgia, serif",
+                  fontFamily: font,
+                  letterSpacing: "0.01em",
                 }}
               >
                 Three interdependent subsystems. A complete ground-up engineering
@@ -224,7 +270,7 @@ export default function Home() {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
             gap: "1px",
-            backgroundColor: "var(--border)",
+            backgroundColor: "var(--color-accent)",
           }}
         >
           {subsystems.map((s, i) => {
@@ -237,49 +283,55 @@ export default function Home() {
                     padding: "32px",
                     backgroundColor: "var(--card-bg)",
                     borderLeft: isActive
-                      ? "2px solid var(--color-accent)"
-                      : "2px solid transparent",
+                      ? "3px solid var(--color-accent)"
+                      : "3px solid transparent",
                     height: "100%",
                   }}
                 >
                   <p
                     style={{
-                      fontSize: "10px",
+                      fontSize: "11px",
                       letterSpacing: "0.3em",
                       textTransform: "uppercase",
-                      color: isActive ? "var(--color-accent)" : "var(--muted-more)",
+                      color: isActive ? "var(--color-accent)" : "var(--muted)",
                       marginBottom: "12px",
+                      fontFamily: font,
+                      fontWeight: 500,
                     }}
                   >
                     {s.designation}
                   </p>
                   <h2
                     style={{
-                      fontSize: "22px",
-                      fontWeight: 500,
-                      letterSpacing: "0.1em",
+                      fontSize: "24px",
+                      fontWeight: 600,
+                      letterSpacing: "0.08em",
                       color: isActive ? "var(--foreground)" : "var(--muted)",
                       marginBottom: "12px",
+                      fontFamily: font,
                     }}
                   >
                     {s.name}
                   </h2>
                   <p
                     style={{
-                      fontSize: "12px",
+                      fontSize: "14px",
                       color: "var(--muted)",
                       marginBottom: "24px",
                       lineHeight: 1.6,
+                      fontFamily: font,
                     }}
                   >
                     {s.description}
                   </p>
                   <span
                     style={{
-                      fontSize: "10px",
+                      fontSize: "11px",
                       letterSpacing: "0.25em",
                       textTransform: "uppercase",
-                      color: isActive ? "var(--color-accent)" : "var(--muted-more)",
+                      color: isActive ? "var(--color-accent)" : "var(--muted)",
+                      fontFamily: font,
+                      fontWeight: isActive ? 500 : 400,
                     }}
                   >
                     {s.status}

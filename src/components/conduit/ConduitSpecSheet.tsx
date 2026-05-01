@@ -1,5 +1,7 @@
 import { TUBE, VACUUM, STRUCTURE, THERMAL, VACUUM_PUMPS, LEAK_DETECTION, SOLAR } from "./data/conduit-specs";
 
+const font = "Helvetica Neue, Helvetica, Arial, sans-serif";
+
 function Section({
   title,
   rows,
@@ -8,15 +10,16 @@ function Section({
   rows: { label: string; value: string; unit?: string; source?: string }[];
 }) {
   return (
-    <div style={{ marginBottom: "48px" }}>
+    <div style={{ marginBottom: "56px" }}>
       <p
         style={{
-          fontSize: "9px",
+          fontSize: "12px",
           letterSpacing: "0.3em",
           textTransform: "uppercase",
           color: "var(--color-accent)",
-          fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-          marginBottom: "16px",
+          fontFamily: font,
+          fontWeight: 600,
+          marginBottom: "20px",
         }}
       >
         {title}
@@ -29,24 +32,25 @@ function Section({
               display: "flex",
               justifyContent: "space-between",
               alignItems: "baseline",
-              padding: "10px 0",
+              padding: "14px 0",
               borderBottom: "1px solid var(--border)",
-              fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+              fontFamily: font,
+              gap: "16px",
             }}
           >
-            <span style={{ fontSize: "11px", color: "var(--muted)" }}>
+            <span style={{ fontSize: "14px", color: "var(--muted)", letterSpacing: "0.02em" }}>
               {row.label}
             </span>
-            <div style={{ textAlign: "right" }}>
-              <span style={{ fontSize: "13px", color: "var(--foreground)" }}>
+            <div style={{ textAlign: "right", flexShrink: 0 }}>
+              <span style={{ fontSize: "16px", fontWeight: 600, color: "var(--foreground)" }}>
                 {row.value}
               </span>
               {row.unit && (
                 <span
                   style={{
-                    fontSize: "10px",
+                    fontSize: "12px",
                     color: "var(--muted)",
-                    marginLeft: "4px",
+                    marginLeft: "5px",
                   }}
                 >
                   {row.unit}
@@ -55,9 +59,9 @@ function Section({
               {row.source && (
                 <div
                   style={{
-                    fontSize: "9px",
-                    color: "var(--muted-more)",
-                    marginTop: "2px",
+                    fontSize: "11px",
+                    color: "var(--muted)",
+                    marginTop: "3px",
                   }}
                 >
                   {row.source}
@@ -78,22 +82,23 @@ export default function ConduitSpecSheet() {
         padding: "80px 32px",
         maxWidth: "900px",
         margin: "0 auto",
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: font,
       }}
     >
       <div
         style={{
-          borderTop: "1px solid var(--border)",
-          marginBottom: "48px",
+          borderTop: "2px solid var(--color-accent)",
+          marginBottom: "56px",
         }}
       />
       <p
         style={{
-          fontSize: "9px",
+          fontSize: "12px",
           letterSpacing: "0.3em",
           textTransform: "uppercase",
-          color: "var(--muted-more)",
-          marginBottom: "48px",
+          color: "var(--muted)",
+          marginBottom: "56px",
+          fontFamily: font,
         }}
       >
         FH-DX-I Conduit — Full Specification

@@ -205,7 +205,7 @@ export const HOTSPOTS: HotspotData[] = [
     whyItMatters:
       "The support structure is standard civil engineering — no novel construction methods required.",
     source: "Standard structural engineering; seismic isolation industry standards",
-    cameraPreset: [0, -3, 0],
+    cameraPreset: [8, -4, 3],
   },
   {
     id: "06",

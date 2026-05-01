@@ -1,12 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "./ThemeProvider";
-import { Button } from "./ui/button";
 
 export default function Nav() {
-  const { theme, toggleTheme } = useTheme();
-
   return (
     <nav
       style={{
@@ -21,13 +17,14 @@ export default function Nav() {
         padding: "24px 32px",
         backgroundColor: "var(--nav-bg)",
         backdropFilter: "blur(12px)",
+        borderBottom: "1px solid var(--border)",
       }}
     >
       <Link
         href="/"
         style={{
           fontSize: "11px",
-          fontWeight: 500,
+          fontWeight: 600,
           letterSpacing: "0.25em",
           textTransform: "uppercase",
           color: "var(--foreground)",
@@ -59,24 +56,6 @@ export default function Nav() {
             {label}
           </Link>
         ))}
-        <Button
-          variant="ghost"
-          onClick={toggleTheme}
-          aria-label="Toggle Theme"
-          className="rounded-none"
-          style={{
-            fontSize: "9px",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-            color: "var(--muted)",
-            padding: "5px 10px",
-            height: "auto",
-            border: "1px solid var(--border)",
-          }}
-        >
-          {theme === "dark" ? "LIGHT" : "DARK"}
-        </Button>
       </div>
     </nav>
   );

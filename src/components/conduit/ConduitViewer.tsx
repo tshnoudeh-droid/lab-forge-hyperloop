@@ -18,32 +18,63 @@ import SpecPanel from "./SpecPanel";
 import type { ViewMode } from "./types";
 import { Button } from "@/components/ui/button";
 
-function CameraController({ target }: { target: [number, number, number] | null }) {
+const DEFAULT_CAMERA: [number, number, number] = [12, 6, 20];
+
+function CameraController({
+  target,
+  onReached,
+}: {
+  target: [number, number, number] | null;
+  onReached: () => void;
+}) {
   const { camera } = useThree();
   const targetVec = useRef(new THREE.Vector3());
 
   useFrame(() => {
     if (!target) return;
     targetVec.current.set(target[0], target[1], target[2]);
-    camera.position.lerp(targetVec.current, 0.05);
+    camera.position.lerp(targetVec.current, 0.06);
     camera.lookAt(0, 0, 0);
+    if (camera.position.distanceTo(targetVec.current) < 0.25) {
+      onReached();
+    }
   });
 
   return null;
 }
+
+const font = "Helvetica Neue, Helvetica, Arial, sans-serif";
+
+const LAYER_TOGGLES = [
+  { key: "halbach", label: "HALBACH TRACK" },
+  { key: "lim", label: "LIM STATOR" },
+  { key: "joints", label: "EXPANSION JOINTS" },
+  { key: "pumps", label: "PUMP STATIONS" },
+  { key: "fiber", label: "FIBER OPTIC" },
+  { key: "pylons", label: "PYLONS" },
+  { key: "solar", label: "SOLAR FILM" },
+] as const;
+
+type LayerKey = (typeof LAYER_TOGGLES)[number]["key"];
 
 export default function ConduitViewer() {
   const [viewMode, setViewMode] = useState<ViewMode>("cutaway");
   const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
   const [cameraTarget, setCameraTarget] = useState<[number, number, number] | null>(null);
   const [specPanelOpen, setSpecPanelOpen] = useState(false);
-  const [showHalbach, setShowHalbach] = useState(true);
-  const [showLIM, setShowLIM] = useState(true);
-  const [showExpansionJoints, setShowExpansionJoints] = useState(true);
-  const [showPumpStations, setShowPumpStations] = useState(true);
-  const [showFiberOptic, setShowFiberOptic] = useState(true);
-  const [showPylons, setShowPylons] = useState(true);
-  const [showSolar, setShowSolar] = useState(true);
+  const [layers, setLayers] = useState<Record<LayerKey, boolean>>({
+    halbach: true,
+    lim: true,
+    joints: true,
+    pumps: true,
+    fiber: true,
+    pylons: true,
+    solar: true,
+  });
+
+  function toggleLayer(key: LayerKey) {
+    setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
 
   function handleHotspotClick(id: string, preset: [number, number, number]) {
     setActiveHotspot(id);
@@ -54,185 +85,168 @@ export default function ConduitViewer() {
   function handlePanelClose() {
     setSpecPanelOpen(false);
     setActiveHotspot(null);
+    setCameraTarget(DEFAULT_CAMERA);
+  }
+
+  function handleCameraReached() {
     setCameraTarget(null);
   }
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "clamp(400px, 55vh, 600px)",
-        position: "relative",
-      }}
-    >
-      <ViewControls mode={viewMode} onChange={setViewMode} />
-      <Button
-        variant="ghost"
-        className="rounded-none absolute"
-        onClick={() => {
-          setCameraTarget([12, 6, 20]);
-          setActiveHotspot(null);
-          setSpecPanelOpen(false);
-        }}
+    <div>
+      {/* VIEWER — brown dot grid background */}
+      <div
         style={{
-          top: "16px",
-          right: "16px",
-          padding: "6px 12px",
-          fontSize: "9px",
-          letterSpacing: "0.2em",
-          textTransform: "uppercase",
-          fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-          background: "var(--border)",
-          color: "var(--muted)",
-          height: "auto",
-          zIndex: 10,
-          transition: "color 0.15s",
+          width: "100%",
+          height: "clamp(500px, 60vh, 680px)",
+          position: "relative",
+          backgroundImage: `radial-gradient(circle, var(--color-accent) 1px, transparent 1px)`,
+          backgroundSize: "28px 28px",
+          backgroundColor: "var(--background)",
         }}
       >
-        RESET
-      </Button>
-      <Canvas
-        camera={{ position: [12, 6, 20], fov: 45, near: 0.1, far: 1000 }}
-        style={{ background: "var(--background)" }}
-        gl={{ antialias: true, localClippingEnabled: true }}
-      >
-        <Suspense
-          fallback={
-            <Html center>
-              <span
-                style={{
-                  fontSize: "10px",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                  color: "var(--muted)",
-                  fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Loading
-              </span>
-            </Html>
-          }
+        <ViewControls mode={viewMode} onChange={setViewMode} />
+        <Button
+          variant="ghost"
+          className="rounded-none absolute"
+          onClick={() => {
+            setCameraTarget(DEFAULT_CAMERA);
+            setActiveHotspot(null);
+            setSpecPanelOpen(false);
+          }}
+          style={{
+            top: "16px",
+            right: "16px",
+            padding: "8px 16px",
+            fontSize: "10px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            fontFamily: font,
+            background: "var(--background)",
+            color: "var(--muted)",
+            height: "auto",
+            zIndex: 10,
+            transition: "color 0.15s",
+            border: "1px solid var(--border)",
+          }}
         >
-          <ambientLight intensity={1.0} />
-          <directionalLight position={[10, 20, 10]} intensity={1.8} />
-          <directionalLight position={[-10, -5, -10]} intensity={0.3} color="#C4A882" />
-          <directionalLight position={[-5, 8, -20]} intensity={1.2} />
-          <OrbitControls
-            enablePan={false}
-            minDistance={5}
-            maxDistance={80}
-            autoRotate
-            autoRotateSpeed={0.4}
-          />
-          <TubeGeometry viewMode={viewMode} />
-          <InternalSystems
-            showHalbach={showHalbach}
-            showLIM={showLIM}
-            viewMode={viewMode}
-          />
-          <ExpansionJoints show={showExpansionJoints} viewMode={viewMode} />
-          <VacuumPumpStation show={showPumpStations} viewMode={viewMode} />
-          <FiberOpticCable show={showFiberOptic} />
-          <PylonStructure show={showPylons} />
-          <SolarFilm show={showSolar} viewMode={viewMode} />
-          <CameraController target={cameraTarget} />
-          <HotspotLayer
-            activeId={activeHotspot}
-            onHotspotClick={handleHotspotClick}
-          />
-          <ZoomDetailManager />
-        </Suspense>
-      </Canvas>
-      <SpecPanel
-        hotspotId={specPanelOpen ? activeHotspot : null}
-        onClose={handlePanelClose}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "16px",
-          left: "16px",
-          fontSize: "9px",
-          letterSpacing: "0.25em",
-          textTransform: "uppercase",
-          color: "var(--muted-more)",
-          fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-          pointerEvents: "none",
-        }}
-      >
-        Scale 1:1 — Real Geometry
+          RESET
+        </Button>
+        <Canvas
+          camera={{ position: DEFAULT_CAMERA, fov: 45, near: 0.1, far: 1000 }}
+          style={{ background: "transparent" }}
+          gl={{ antialias: true, localClippingEnabled: true }}
+        >
+          <Suspense
+            fallback={
+              <Html center>
+                <span
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.3em",
+                    textTransform: "uppercase",
+                    color: "var(--muted)",
+                    fontFamily: font,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Loading
+                </span>
+              </Html>
+            }
+          >
+            <ambientLight intensity={1.2} />
+            <directionalLight position={[10, 20, 10]} intensity={2.0} />
+            <directionalLight position={[-10, -5, -10]} intensity={0.4} color="#C4A882" />
+            <directionalLight position={[-5, 8, -20]} intensity={1.4} />
+            <OrbitControls
+              enabled={cameraTarget === null}
+              enablePan={false}
+              minDistance={5}
+              maxDistance={80}
+              autoRotate
+              autoRotateSpeed={0.4}
+            />
+            <TubeGeometry viewMode={viewMode} />
+            <InternalSystems
+              showHalbach={layers.halbach}
+              showLIM={layers.lim}
+              viewMode={viewMode}
+            />
+            <ExpansionJoints show={layers.joints} viewMode={viewMode} />
+            <VacuumPumpStation show={layers.pumps} viewMode={viewMode} />
+            <FiberOpticCable show={layers.fiber} />
+            <PylonStructure show={layers.pylons} />
+            <SolarFilm show={layers.solar} viewMode={viewMode} />
+            <CameraController target={cameraTarget} onReached={handleCameraReached} />
+            <HotspotLayer
+              activeId={activeHotspot}
+              onHotspotClick={handleHotspotClick}
+            />
+            <ZoomDetailManager />
+          </Suspense>
+        </Canvas>
+        <SpecPanel
+          hotspotId={specPanelOpen ? activeHotspot : null}
+          onClose={handlePanelClose}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "16px",
+            right: "16px",
+            fontSize: "10px",
+            letterSpacing: "0.25em",
+            textTransform: "uppercase",
+            color: "var(--muted)",
+            fontFamily: font,
+            pointerEvents: "none",
+          }}
+        >
+          Scale 1:1 — Real Geometry
+        </div>
       </div>
-      {/* Layer toggles */}
+
+      {/* LAYER TOGGLES — below viewer, not overlapping */}
       <div
         style={{
-          position: "absolute",
-          bottom: "48px",
-          left: "16px",
+          padding: "16px 32px",
           display: "flex",
-          gap: "2px",
+          gap: "6px",
           flexWrap: "wrap",
-          maxWidth: "calc(100% - 32px)",
+          borderBottom: "1px solid var(--border)",
+          backgroundColor: "var(--background-secondary)",
         }}
       >
-        {[
-          {
-            key: "halbach",
-            label: "HALBACH TRACK",
-            active: showHalbach,
-            toggle: () => setShowHalbach((v) => !v),
-          },
-          {
-            key: "lim",
-            label: "LIM STATOR",
-            active: showLIM,
-            toggle: () => setShowLIM((v) => !v),
-          },
-          {
-            key: "joints",
-            label: "EXPANSION JOINTS",
-            active: showExpansionJoints,
-            toggle: () => setShowExpansionJoints((v) => !v),
-          },
-          {
-            key: "pumps",
-            label: "PUMP STATIONS",
-            active: showPumpStations,
-            toggle: () => setShowPumpStations((v) => !v),
-          },
-          {
-            key: "fiber",
-            label: "FIBER OPTIC",
-            active: showFiberOptic,
-            toggle: () => setShowFiberOptic((v) => !v),
-          },
-          {
-            key: "pylons",
-            label: "PYLONS",
-            active: showPylons,
-            toggle: () => setShowPylons((v) => !v),
-          },
-          {
-            key: "solar",
-            label: "SOLAR FILM",
-            active: showSolar,
-            toggle: () => setShowSolar((v) => !v),
-          },
-        ].map(({ key, label, active, toggle }) => (
+        <p
+          style={{
+            fontSize: "10px",
+            letterSpacing: "0.25em",
+            textTransform: "uppercase",
+            color: "var(--muted)",
+            fontFamily: font,
+            marginRight: "12px",
+            alignSelf: "center",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Layers
+        </p>
+        {LAYER_TOGGLES.map(({ key, label }) => (
           <Button
             key={key}
             variant="ghost"
-            onClick={toggle}
+            onClick={() => toggleLayer(key)}
             className="rounded-none"
             style={{
-              padding: "5px 10px",
-              fontSize: "9px",
+              padding: "6px 14px",
+              fontSize: "10px",
               letterSpacing: "0.15em",
               textTransform: "uppercase",
-              fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-              background: active ? "var(--muted-more)" : "var(--border)",
-              color: active ? "var(--color-accent)" : "var(--muted)",
-              border: `1px solid ${active ? "var(--color-accent)" : "var(--border)"}`,
+              fontFamily: font,
+              background: layers[key] ? "var(--color-accent)" : "transparent",
+              color: layers[key] ? "var(--background)" : "var(--muted)",
+              border: `1px solid ${layers[key] ? "var(--color-accent)" : "var(--border)"}`,
               height: "auto",
               transition: "all 0.15s",
             }}

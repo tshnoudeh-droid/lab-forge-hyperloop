@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ConduitViewerClient from "@/components/conduit/ConduitViewerClient";
 import ConduitSpecSheet from "@/components/conduit/ConduitSpecSheet";
 import { TUBE, VACUUM, PYLONS } from "@/components/conduit/data/conduit-specs";
@@ -18,41 +19,67 @@ export default function ConduitPage() {
         fontFamily: font,
       }}
     >
-      <div style={{ paddingTop: "72px" }}>
+      <div style={{ paddingTop: "88px" }}>
+
+        {/* BACK BUTTON */}
+        <div style={{ padding: "0 32px 24px" }}>
+          <Link
+            href="/"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              fontSize: "11px",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "var(--muted)",
+              fontFamily: font,
+              textDecoration: "none",
+              transition: "color 0.2s",
+            }}
+          >
+            <span style={{ fontSize: "16px", lineHeight: 1 }}>&#8592;</span>
+            Back
+          </Link>
+        </div>
 
         {/* DESCRIPTION BLOCK */}
-        <div style={{ padding: "48px 32px 0" }}>
+        <div style={{ padding: "0 32px 0" }}>
           <p
             style={{
-              fontSize: "10px",
+              fontSize: "12px",
               letterSpacing: "0.3em",
               textTransform: "uppercase",
               color: "var(--color-accent)",
-              marginBottom: "12px",
+              marginBottom: "14px",
+              fontFamily: font,
+              fontWeight: 500,
             }}
           >
             FH-DX-I
           </p>
           <h1
             style={{
-              fontSize: "42px",
-              fontWeight: 500,
-              letterSpacing: "0.08em",
+              fontSize: "56px",
+              fontWeight: 700,
+              letterSpacing: "0.06em",
               color: "var(--foreground)",
-              marginBottom: "16px",
+              marginBottom: "20px",
               lineHeight: 1,
+              fontFamily: font,
             }}
           >
             CONDUIT
           </h1>
           <p
             style={{
-              fontSize: "14px",
+              fontSize: "17px",
               color: "var(--muted)",
               lineHeight: 1.75,
-              maxWidth: "560px",
-              marginBottom: "40px",
-              fontFamily: "var(--font-libre-baskerville), Georgia, serif",
+              maxWidth: "600px",
+              marginBottom: "44px",
+              fontFamily: font,
+              letterSpacing: "0.01em",
             }}
           >
             The tube system that defines the hyperloop environment. A {TUBE.outerDiameter}m
@@ -65,11 +92,12 @@ export default function ConduitPage() {
           {/* KEY SPECS ROW */}
           <div
             style={{
-              borderTop: "1px solid var(--border)",
-              paddingTop: "24px",
+              borderTop: "2px solid var(--color-accent)",
+              paddingTop: "28px",
               display: "flex",
-              gap: "48px",
+              gap: "56px",
               flexWrap: "wrap",
+              marginBottom: "0",
             }}
           >
             {[
@@ -81,21 +109,24 @@ export default function ConduitPage() {
               <div key={label}>
                 <p
                   style={{
-                    fontSize: "9px",
+                    fontSize: "11px",
                     letterSpacing: "0.25em",
                     textTransform: "uppercase",
-                    color: "var(--muted-more)",
-                    marginBottom: "6px",
+                    color: "var(--color-accent)",
+                    marginBottom: "8px",
+                    fontFamily: font,
+                    fontWeight: 500,
                   }}
                 >
                   {label}
                 </p>
                 <p
                   style={{
-                    fontSize: "15px",
-                    fontWeight: 500,
+                    fontSize: "22px",
+                    fontWeight: 600,
                     color: "var(--foreground)",
                     letterSpacing: "0.02em",
+                    fontFamily: font,
                   }}
                 >
                   {value}
@@ -109,7 +140,7 @@ export default function ConduitPage() {
         <div
           style={{
             borderTop: "1px solid var(--border)",
-            margin: "32px 0 0",
+            margin: "36px 0 0",
           }}
         />
 
