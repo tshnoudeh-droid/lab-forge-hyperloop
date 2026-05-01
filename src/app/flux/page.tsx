@@ -45,11 +45,12 @@ export default function Flux() {
           </h1>
           <p
             style={{
-              fontSize: "13px",
+              fontSize: "14px",
               color: "var(--muted)",
-              lineHeight: 1.7,
+              lineHeight: 1.75,
               maxWidth: "560px",
               marginBottom: "40px",
+              fontFamily: "var(--font-libre-baskerville), Georgia, serif",
             }}
           >
             Propulsion and levitation. A passive Halbach array maglev track paired with

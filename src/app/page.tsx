@@ -132,9 +132,10 @@ export default function Home() {
               style={{
                 fontSize: "19px",
                 fontWeight: 400,
-                lineHeight: 1.65,
+                lineHeight: 1.7,
                 color: "var(--foreground)",
                 textAlign: "center",
+                fontFamily: "var(--font-libre-baskerville), Georgia, serif",
               }}
             >
               Forge Hyperloop Lab is the engineering core of the DX-I program.
@@ -202,10 +203,11 @@ export default function Home() {
               </h2>
               <p
                 style={{
-                  fontSize: "13px",
+                  fontSize: "14px",
                   color: "var(--muted)",
-                  lineHeight: 1.7,
+                  lineHeight: 1.75,
                   maxWidth: "480px",
+                  fontFamily: "var(--font-libre-baskerville), Georgia, serif",
                 }}
               >
                 Three interdependent subsystems. A complete ground-up engineering

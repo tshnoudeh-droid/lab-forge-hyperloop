@@ -47,11 +47,12 @@ export default function ConduitPage() {
           </h1>
           <p
             style={{
-              fontSize: "13px",
+              fontSize: "14px",
               color: "var(--muted)",
-              lineHeight: 1.7,
+              lineHeight: 1.75,
               maxWidth: "560px",
               marginBottom: "40px",
+              fontFamily: "var(--font-libre-baskerville), Georgia, serif",
             }}
           >
             The tube system that defines the hyperloop environment. A {TUBE.outerDiameter}m

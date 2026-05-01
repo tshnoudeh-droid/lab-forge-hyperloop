@@ -2,38 +2,46 @@
 
 :root {
   --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: "Libre Baskerville", Georgia, serif;
   --font-mono: "SF Mono", "JetBrains Mono", monospace;
-  --color-accent: #C4A882;
-  --color-sand: #C4A882;
 
-  --background: #0A0A0A;
+  --color-accent: #C3A984;
+  --color-sand: #C3A984;
+  --color-accent-dim: rgba(195, 169, 132, 0.3);
+
+  --background: #0E0E0C;
+  --background-secondary: #161614;
   --foreground: #FFFFFF;
-  --muted: rgba(255, 255, 255, 0.4);
-  --muted-more: rgba(255, 255, 255, 0.2);
-  --border: rgba(255, 255, 255, 0.1);
-  --card-bg: #0A0A0A;
-  --nav-bg: rgba(10, 10, 10, 0.8);
+  --muted: rgba(203, 201, 196, 0.6);
+  --muted-more: rgba(203, 201, 196, 0.3);
+  --border: rgba(195, 169, 132, 0.3);
+  --card-bg: #0E0E0C;
+  --nav-bg: rgba(14, 14, 12, 0.8);
+  --panel-fill: rgba(14, 14, 12, 0.75);
+  --hero-glow: rgba(195, 169, 132, 0.07);
 
   /* shadcn-compatible aliases */
-  --primary: #C4A882;
-  --primary-foreground: #0A0A0A;
-  --secondary: rgba(255, 255, 255, 0.08);
+  --primary: #C3A984;
+  --primary-foreground: #0E0E0C;
+  --secondary: rgba(203, 201, 196, 0.08);
   --secondary-foreground: #FFFFFF;
-  --accent: rgba(255, 255, 255, 0.06);
+  --accent: rgba(203, 201, 196, 0.06);
   --accent-foreground: #FFFFFF;
   --destructive: #ff4444;
-  --input: rgba(255, 255, 255, 0.1);
-  --ring: #C4A882;
+  --input: rgba(195, 169, 132, 0.3);
+  --ring: #C3A984;
 }
 
 :root.light {
-  --background: #F8F9FA;
-  --foreground: #1A1A1A;
-  --muted: rgba(0, 0, 0, 0.5);
-  --muted-more: rgba(0, 0, 0, 0.25);
-  --border: rgba(0, 0, 0, 0.1);
-  --card-bg: #FFFFFF;
-  --nav-bg: rgba(248, 249, 250, 0.8);
+  --background: #FFFFFF;
+  --background-secondary: #F5F3F0;
+  --foreground: #0E0E0C;
+  --muted: rgba(14, 14, 12, 0.5);
+  --muted-more: rgba(14, 14, 12, 0.3);
+  --border: rgba(195, 169, 132, 0.25);
+  --card-bg: #F5F3F0;
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --panel-fill: rgba(245, 243, 240, 0.75);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -58,6 +66,11 @@ html { scroll-behavior: smooth; }
   line-height: 1.6;
   color: var(--muted);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.body-serif {
+  font-family: "Libre Baskerville", Georgia, serif;
+  line-height: 1.7;
+  color: var(--muted);
 }
 
 body {

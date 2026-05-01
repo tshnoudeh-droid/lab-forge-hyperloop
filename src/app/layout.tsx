@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
+import { Libre_Baskerville } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+
+const libreBaskerville = Libre_Baskerville({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-libre-baskerville",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Forge Hyperloop Lab",
@@ -11,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={libreBaskerville.variable}>
       <body>
         <ThemeProvider>
           <Nav />
