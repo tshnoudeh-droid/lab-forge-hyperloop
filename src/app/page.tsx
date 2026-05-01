@@ -302,44 +302,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER LINE */}
-      <FadeIn>
-        <footer
-          style={{
-            maxWidth: "900px",
-            margin: "0 auto",
-            padding: "0 32px 64px",
-            borderTop: "1px solid var(--border)",
-            paddingTop: "32px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "16px",
-          }}
-        >
-          <p
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.25em",
-              textTransform: "uppercase",
-              color: "var(--muted-more)",
-            }}
-          >
-            Forge Hyperloop Lab
-          </p>
-          <p
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: "var(--muted-more)",
-            }}
-          >
-            lab.forgehyperloop.com
-          </p>
-        </footer>
-      </FadeIn>
     </main>
   );
 }
