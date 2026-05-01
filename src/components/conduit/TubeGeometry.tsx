@@ -19,7 +19,7 @@ export default function TubeGeometry({ viewMode }: TubeGeometryProps) {
       <group>
         <mesh rotation={[Math.PI / 2, 0, 0]}>
           <ringGeometry args={[TUBE.innerRadius, TUBE.outerRadius, 64]} />
-          <meshStandardMaterial color="#2a2a2a" metalness={0.85} roughness={0.3} side={THREE.DoubleSide} />
+          <meshStandardMaterial color="#787878" metalness={0.9} roughness={0.2} side={THREE.DoubleSide} />
         </mesh>
       </group>
     );
@@ -31,9 +31,9 @@ export default function TubeGeometry({ viewMode }: TubeGeometryProps) {
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <cylinderGeometry args={[TUBE.outerRadius, TUBE.outerRadius, TUBE.length, TUBE.segments, 1, true]} />
         <meshStandardMaterial
-          color="#2a2a2a"
-          metalness={0.85}
-          roughness={0.3}
+          color="#787878"
+          metalness={0.9}
+          roughness={0.2}
           side={THREE.DoubleSide}
           clippingPlanes={clippingPlanes}
           clipShadows={true}
@@ -43,7 +43,7 @@ export default function TubeGeometry({ viewMode }: TubeGeometryProps) {
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <cylinderGeometry args={[TUBE.innerRadius, TUBE.innerRadius, TUBE.length, TUBE.segments, 1, true]} />
         <meshStandardMaterial
-          color="#1a1a1a"
+          color="#454545"
           metalness={0.6}
           roughness={0.5}
           side={THREE.DoubleSide}
@@ -56,9 +56,9 @@ export default function TubeGeometry({ viewMode }: TubeGeometryProps) {
         <mesh key={i} position={[0, 0, z]} rotation={[Math.PI / 2, 0, 0]}>
           <ringGeometry args={[TUBE.innerRadius, TUBE.outerRadius, TUBE.segments]} />
           <meshStandardMaterial
-            color="#2a2a2a"
-            metalness={0.85}
-            roughness={0.3}
+            color="#787878"
+            metalness={0.9}
+            roughness={0.2}
             side={THREE.DoubleSide}
             clippingPlanes={clippingPlanes}
           />

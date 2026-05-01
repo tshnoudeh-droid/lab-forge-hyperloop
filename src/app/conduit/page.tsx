@@ -16,14 +16,14 @@ export default function ConduitPage() {
       }}
     >
       <div style={{ paddingTop: "72px" }}>
-        <div style={{ padding: "32px 32px 16px" }}>
+        <div style={{ padding: "40px 32px 24px" }}>
           <p
             style={{
               fontSize: "10px",
               letterSpacing: "0.3em",
               textTransform: "uppercase",
               color: "var(--color-accent)",
-              marginBottom: "8px",
+              marginBottom: "12px",
             }}
           >
             FH-DX-I
@@ -32,9 +32,10 @@ export default function ConduitPage() {
             style={{
               fontSize: "42px",
               fontWeight: 500,
-              letterSpacing: "0.1em",
+              letterSpacing: "0.08em",
               color: "var(--foreground)",
-              marginBottom: "4px",
+              marginBottom: "12px",
+              lineHeight: 1,
             }}
           >
             CONDUIT
@@ -43,6 +44,8 @@ export default function ConduitPage() {
             style={{
               fontSize: "12px",
               color: "var(--muted)",
+              lineHeight: 1.6,
+              maxWidth: "480px",
             }}
           >
             Tube shell, vacuum system, seals, pylons, sensors. Scale 1:1 — real geometry.

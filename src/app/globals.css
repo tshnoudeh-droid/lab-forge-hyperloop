@@ -28,6 +28,27 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+.label-xs {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted-more);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.label-sm {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.body-sm {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: var(--background);

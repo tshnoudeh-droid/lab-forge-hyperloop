@@ -8,8 +8,19 @@ export default function Nav() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6"
-      style={{ backgroundColor: "var(--nav-bg)", backdropFilter: "blur(12px)" }}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "24px 32px",
+        backgroundColor: "var(--nav-bg)",
+        backdropFilter: "blur(12px)",
+      }}
     >
       <Link
         href="/"
@@ -51,18 +62,19 @@ export default function Nav() {
           onClick={toggleTheme}
           style={{
             background: "none",
-            border: "none",
+            border: "1px solid var(--border)",
             cursor: "pointer",
-            fontSize: "14px",
-            color: "var(--foreground)",
-            padding: "4px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            fontSize: "9px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+            color: "var(--muted)",
+            padding: "5px 10px",
+            transition: "color 0.2s",
           }}
           aria-label="Toggle Theme"
         >
-          {theme === "dark" ? "☀️" : "🌙"}
+          {theme === "dark" ? "LIGHT" : "DARK"}
         </button>
       </div>
     </nav>

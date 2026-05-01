@@ -113,13 +113,10 @@ export default function ConduitViewer() {
             </Html>
           }
         >
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[10, 20, 10]} intensity={1.2} />
-          <directionalLight
-            position={[-10, -5, -10]}
-            intensity={0.3}
-            color="#C4A882"
-          />
+          <ambientLight intensity={1.0} />
+          <directionalLight position={[10, 20, 10]} intensity={1.8} />
+          <directionalLight position={[-10, -5, -10]} intensity={0.3} color="#C4A882" />
+          <directionalLight position={[-5, 8, -20]} intensity={1.2} />
           <OrbitControls
             enablePan={false}
             minDistance={5}
