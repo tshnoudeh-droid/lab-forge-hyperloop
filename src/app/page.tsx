@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
+import FadeIn from "@/components/FadeIn";
 
 const subsystems = [
   {
@@ -24,71 +28,194 @@ const subsystems = [
   },
 ];
 
+const font = "Helvetica Neue, Helvetica, Arial, sans-serif";
+
 export default function Home() {
   return (
     <main
       style={{
-        minHeight: "100vh",
-        padding: "128px 32px 96px",
         backgroundColor: "var(--background)",
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: font,
+        minHeight: "100vh",
       }}
     >
-      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-        <h1
+      {/* HERO */}
+      <section
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: "0 32px",
+        }}
+      >
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.25, 0, 0, 1] }}
           style={{
-            fontSize: "clamp(120px, 20vw, 220px)",
-            fontWeight: 700,
-            lineHeight: 1,
-            letterSpacing: "-0.03em",
-            color: "var(--foreground)",
-            marginBottom: "8px",
-          }}
-        >
-          LAB
-        </h1>
-        <p
-          style={{
-            fontSize: "13px",
-            letterSpacing: "0.3em",
+            fontSize: "11px",
+            letterSpacing: "0.35em",
             textTransform: "uppercase",
             color: "var(--muted)",
-            marginBottom: "8px",
+            marginBottom: "20px",
           }}
         >
           Forge Hyperloop
-        </p>
-        <p
+        </motion.p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.1, ease: [0.25, 0, 0, 1] }}
           style={{
-            fontSize: "13px",
-            color: "var(--muted)",
-            marginBottom: "64px",
-            maxWidth: "480px",
-            lineHeight: 1.6,
+            fontSize: "clamp(140px, 22vw, 240px)",
+            fontWeight: 700,
+            lineHeight: 0.9,
+            letterSpacing: "-0.03em",
+            color: "var(--foreground)",
+            marginBottom: "28px",
           }}
         >
-          Engineering specifications for the Forge Hyperloop DX-I program.
-        </p>
+          LAB
+        </motion.h1>
 
-        <div
-          style={{
-            borderTop: "1px solid var(--border)",
-            marginBottom: "32px",
-          }}
-        />
-
-        <p
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.28, ease: [0.25, 0, 0, 1] }}
           style={{
             fontSize: "11px",
-            letterSpacing: "0.3em",
+            letterSpacing: "0.25em",
             textTransform: "uppercase",
-            color: "var(--muted-more)",
-            marginBottom: "32px",
+            color: "var(--muted)",
+            lineHeight: 1.8,
           }}
         >
-          Forge Hyperloop DX-I
-        </p>
+          Engineering specifications
+          <br />
+          for the DX-I program
+        </motion.p>
+      </section>
 
+      {/* MISSION */}
+      <section
+        style={{
+          padding: "0 32px 96px",
+          maxWidth: "760px",
+          margin: "0 auto",
+        }}
+      >
+        <FadeIn>
+          <div
+            style={{
+              borderTop: "1px solid var(--border)",
+              paddingTop: "56px",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "10px",
+                letterSpacing: "0.3em",
+                textTransform: "uppercase",
+                color: "var(--muted-more)",
+                marginBottom: "40px",
+                textAlign: "center",
+              }}
+            >
+              01 // Mission
+            </p>
+            <p
+              style={{
+                fontSize: "19px",
+                fontWeight: 400,
+                lineHeight: 1.65,
+                color: "var(--foreground)",
+                textAlign: "center",
+              }}
+            >
+              Forge Hyperloop Lab is the engineering core of the DX-I program.
+              A physics-first, software-defined approach to hyperloop design.
+              Every subsystem modeled at 1:1 scale with real geometry and verified physics.
+            </p>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* DX PROJECT */}
+      <section
+        style={{
+          padding: "0 32px 56px",
+          maxWidth: "900px",
+          margin: "0 auto",
+        }}
+      >
+        <FadeIn>
+          <div
+            style={{
+              borderTop: "1px solid var(--border)",
+              paddingTop: "48px",
+              marginBottom: "40px",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "64px",
+              flexWrap: "wrap",
+            }}
+          >
+            <div style={{ flex: "0 0 auto" }}>
+              <p
+                style={{
+                  fontSize: "10px",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  color: "var(--muted-more)",
+                  marginBottom: "8px",
+                }}
+              >
+                02 // Program
+              </p>
+              <p
+                style={{
+                  fontSize: "10px",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  color: "var(--color-accent)",
+                }}
+              >
+                FH-DX-I
+              </p>
+            </div>
+            <div style={{ flex: "1 1 300px" }}>
+              <h2
+                style={{
+                  fontSize: "22px",
+                  fontWeight: 500,
+                  letterSpacing: "0.05em",
+                  color: "var(--foreground)",
+                  marginBottom: "14px",
+                }}
+              >
+                The DX-I program.
+              </h2>
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "var(--muted)",
+                  lineHeight: 1.7,
+                  maxWidth: "480px",
+                }}
+              >
+                Three interdependent subsystems. A complete ground-up engineering
+                model of a functional hyperloop corridor. Real physics. Real geometry.
+                No simplifications.
+              </p>
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* SUBSYSTEM GRID */}
         <div
           style={{
             display: "grid",
@@ -97,62 +224,66 @@ export default function Home() {
             backgroundColor: "var(--border)",
           }}
         >
-          {subsystems.map((s) => {
+          {subsystems.map((s, i) => {
             const isActive = s.status === "ACTIVE";
             const card = (
-              <div
-                style={{
-                  padding: "32px",
-                  backgroundColor: "var(--card-bg)",
-                  borderLeft: isActive
-                    ? "2px solid var(--color-accent)"
-                    : "2px solid transparent",
-                }}
-              >
-                <p
+              <FadeIn delay={i * 0.08}>
+                <div
                   style={{
-                    fontSize: "10px",
-                    letterSpacing: "0.3em",
-                    textTransform: "uppercase",
-                    color: isActive ? "var(--color-accent)" : "var(--muted-more)",
-                    marginBottom: "12px",
+                    padding: "32px",
+                    backgroundColor: "var(--card-bg)",
+                    borderLeft: isActive
+                      ? "2px solid var(--color-accent)"
+                      : "2px solid transparent",
+                    height: "100%",
                   }}
                 >
-                  {s.designation}
-                </p>
-                <h2
-                  style={{
-                    fontSize: "22px",
-                    fontWeight: 500,
-                    letterSpacing: "0.1em",
-                    color: isActive ? "var(--foreground)" : "var(--muted)",
-                    marginBottom: "12px",
-                  }}
-                >
-                  {s.name}
-                </h2>
-                <p
-                  style={{
-                    fontSize: "12px",
-                    color: "var(--muted)",
-                    marginBottom: "24px",
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {s.description}
-                </p>
-                <span
-                  style={{
-                    fontSize: "10px",
-                    letterSpacing: "0.25em",
-                    textTransform: "uppercase",
-                    color: isActive ? "var(--color-accent)" : "var(--muted-more)",
-                  }}
-                >
-                  {s.status}
-                </span>
-              </div>
+                  <p
+                    style={{
+                      fontSize: "10px",
+                      letterSpacing: "0.3em",
+                      textTransform: "uppercase",
+                      color: isActive ? "var(--color-accent)" : "var(--muted-more)",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    {s.designation}
+                  </p>
+                  <h2
+                    style={{
+                      fontSize: "22px",
+                      fontWeight: 500,
+                      letterSpacing: "0.1em",
+                      color: isActive ? "var(--foreground)" : "var(--muted)",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    {s.name}
+                  </h2>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: "var(--muted)",
+                      marginBottom: "24px",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {s.description}
+                  </p>
+                  <span
+                    style={{
+                      fontSize: "10px",
+                      letterSpacing: "0.25em",
+                      textTransform: "uppercase",
+                      color: isActive ? "var(--color-accent)" : "var(--muted-more)",
+                    }}
+                  >
+                    {s.status}
+                  </span>
+                </div>
+              </FadeIn>
             );
+
             return isActive ? (
               <Link
                 key={s.name}
@@ -166,7 +297,46 @@ export default function Home() {
             );
           })}
         </div>
-      </div>
+      </section>
+
+      {/* FOOTER LINE */}
+      <FadeIn>
+        <footer
+          style={{
+            maxWidth: "900px",
+            margin: "0 auto",
+            padding: "0 32px 64px",
+            borderTop: "1px solid var(--border)",
+            paddingTop: "32px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "10px",
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              color: "var(--muted-more)",
+            }}
+          >
+            Forge Hyperloop Lab
+          </p>
+          <p
+            style={{
+              fontSize: "10px",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "var(--muted-more)",
+            }}
+          >
+            lab.forgehyperloop.com
+          </p>
+        </footer>
+      </FadeIn>
     </main>
   );
 }

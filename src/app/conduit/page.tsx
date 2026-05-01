@@ -1,10 +1,13 @@
 import ConduitViewerClient from "@/components/conduit/ConduitViewerClient";
 import ConduitSpecSheet from "@/components/conduit/ConduitSpecSheet";
+import { TUBE, VACUUM, PYLONS } from "@/components/conduit/data/conduit-specs";
 
 export const metadata = {
   title: "FH-DX-I Conduit — Forge Hyperloop Lab",
   description: "Physics-backed 3D model of the Forge Hyperloop tube system.",
 };
+
+const font = "Helvetica Neue, Helvetica, Arial, sans-serif";
 
 export default function ConduitPage() {
   return (
@@ -12,11 +15,13 @@ export default function ConduitPage() {
       style={{
         backgroundColor: "var(--background)",
         minHeight: "100vh",
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: font,
       }}
     >
       <div style={{ paddingTop: "72px" }}>
-        <div style={{ padding: "40px 32px 24px" }}>
+
+        {/* DESCRIPTION BLOCK */}
+        <div style={{ padding: "48px 32px 0" }}>
           <p
             style={{
               fontSize: "10px",
@@ -34,7 +39,7 @@ export default function ConduitPage() {
               fontWeight: 500,
               letterSpacing: "0.08em",
               color: "var(--foreground)",
-              marginBottom: "12px",
+              marginBottom: "16px",
               lineHeight: 1,
             }}
           >
@@ -42,16 +47,75 @@ export default function ConduitPage() {
           </h1>
           <p
             style={{
-              fontSize: "12px",
+              fontSize: "13px",
               color: "var(--muted)",
-              lineHeight: 1.6,
-              maxWidth: "480px",
+              lineHeight: 1.7,
+              maxWidth: "560px",
+              marginBottom: "40px",
             }}
           >
-            Tube shell, vacuum system, seals, pylons, sensors. Scale 1:1 — real geometry.
+            The tube system that defines the hyperloop environment. A {TUBE.outerDiameter}m
+            outer diameter PosLoop355 steel shell maintains near-vacuum conditions at{" "}
+            {VACUUM.operatingPressure} Pa. Supported by seismic-isolated pylons at{" "}
+            {PYLONS.spacingM}m intervals, with metal bellows expansion joints and distributed
+            fiber optic leak detection along the full corridor.
           </p>
+
+          {/* KEY SPECS ROW */}
+          <div
+            style={{
+              borderTop: "1px solid var(--border)",
+              paddingTop: "24px",
+              display: "flex",
+              gap: "48px",
+              flexWrap: "wrap",
+            }}
+          >
+            {[
+              { label: "Outer Diameter", value: `${TUBE.outerDiameter} m` },
+              { label: "Operating Pressure", value: `${VACUUM.operatingPressure} Pa` },
+              { label: "Pylon Spacing", value: `${PYLONS.spacingM} m` },
+              { label: "Drag Reduction", value: `${VACUUM.dragReductionFactor.toLocaleString()}×` },
+            ].map(({ label, value }) => (
+              <div key={label}>
+                <p
+                  style={{
+                    fontSize: "9px",
+                    letterSpacing: "0.25em",
+                    textTransform: "uppercase",
+                    color: "var(--muted-more)",
+                    marginBottom: "6px",
+                  }}
+                >
+                  {label}
+                </p>
+                <p
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: 500,
+                    color: "var(--foreground)",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {value}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* SEPARATOR */}
+        <div
+          style={{
+            borderTop: "1px solid var(--border)",
+            margin: "32px 0 0",
+          }}
+        />
+
+        {/* 3D VIEWER */}
         <ConduitViewerClient />
+
+        {/* FULL SPEC SHEET */}
         <ConduitSpecSheet />
       </div>
     </main>
