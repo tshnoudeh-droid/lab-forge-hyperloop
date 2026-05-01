@@ -208,41 +208,6 @@ export const HOTSPOTS: HotspotData[] = [
     cameraPreset: [8, -4, 3],
   },
   {
-    id: "06",
-    label: "HALBACH TRACK",
-    position: [0, -1.6, -8],
-    keyStat: "Passive levitation. No power at cruise. 10cm gap",
-    explanation:
-      "The Halbach array on the tube floor creates a passive magnetic field that levitates the pod without powered electromagnets. At cruise speed, levitation consumes zero propulsion energy — the pod floats on permanent magnet flux. The 10cm nominal gap provides clearance for dynamic loading.",
-    data: [
-      { label: "Track type", value: "Halbach array", unit: "" },
-      { label: "Levitation mode", value: "Passive", unit: "" },
-      { label: "Power at cruise", value: "0", unit: "W" },
-      { label: "Nominal gap", value: "10", unit: "cm" },
-    ],
-    whyItMatters:
-      "Passive Halbach levitation eliminates the power-hungry electromagnets that make other maglev systems expensive to operate.",
-    source: "Halbach array permanent magnet levitation literature",
-    cameraPreset: [0, -2, -8],
-  },
-  {
-    id: "07",
-    label: "LIM STATOR",
-    position: [1.8, 0, -3],
-    keyStat: "Linear induction. Active segment only. Regenerative braking",
-    explanation:
-      "Linear Induction Motor stators are mounted on the tube wall in segments. Only the segment immediately surrounding the pod is energized — the rest of the corridor draws no propulsion power. Deceleration feeds energy back to the grid via regenerative braking.",
-    data: [
-      { label: "Motor type", value: "LIM", unit: "" },
-      { label: "Energized zone", value: "Active segment only", unit: "" },
-      { label: "Braking", value: "Regenerative", unit: "" },
-    ],
-    whyItMatters:
-      "Segment-active propulsion means the per-km operating power is proportional to pods in transit, not corridor length.",
-    source: "Linear induction motor engineering literature",
-    cameraPreset: [5, 1, -3],
-  },
-  {
     id: "08",
     label: "THERMAL SYSTEM",
     position: [2.0, 0.3, 10],

@@ -4,20 +4,16 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Html } from "@react-three/drei";
 import { Suspense, useState, useRef } from "react";
 import * as THREE from "three";
-import TubeGeometry from "./TubeGeometry";
-import ViewControls from "./ViewControls";
-import ExpansionJoints from "./ExpansionJoints";
-import VacuumPumpStation from "./VacuumPumpStation";
-import FiberOpticCable from "./FiberOpticCable";
-import PylonStructure from "./PylonStructure";
-import SolarFilm from "./SolarFilm";
-import HotspotLayer from "./HotspotLayer";
-import ZoomDetailManager from "./ZoomDetailManager";
-import SpecPanel from "./SpecPanel";
-import type { ViewMode } from "./types";
 import { Button } from "@/components/ui/button";
+import HalbachTrack from "./HalbachTrack";
+import LIMStators from "./LIMStators";
+import BatterySystem from "./BatterySystem";
+import FluxTubeContext from "./FluxTubeContext";
+import FluxHotspotLayer from "./FluxHotspotLayer";
+import FluxSpecPanel from "./FluxSpecPanel";
 
 const DEFAULT_CAMERA: [number, number, number] = [12, 6, 20];
+const font = "Helvetica Neue, Helvetica, Arial, sans-serif";
 
 function CameraController({
   target,
@@ -42,29 +38,22 @@ function CameraController({
   return null;
 }
 
-const font = "Helvetica Neue, Helvetica, Arial, sans-serif";
-
 const LAYER_TOGGLES = [
-  { key: "joints", label: "EXPANSION JOINTS" },
-  { key: "pumps", label: "PUMP STATIONS" },
-  { key: "fiber", label: "FIBER OPTIC" },
-  { key: "pylons", label: "PYLONS" },
-  { key: "solar", label: "SOLAR FILM" },
+  { key: "halbach", label: "HALBACH TRACK" },
+  { key: "lim", label: "LIM STATOR" },
+  { key: "battery", label: "BATTERY SYSTEM" },
 ] as const;
 
 type LayerKey = (typeof LAYER_TOGGLES)[number]["key"];
 
-export default function ConduitViewer() {
-  const [viewMode, setViewMode] = useState<ViewMode>("cutaway");
+export default function FluxViewer() {
   const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
   const [cameraTarget, setCameraTarget] = useState<[number, number, number] | null>(null);
   const [specPanelOpen, setSpecPanelOpen] = useState(false);
   const [layers, setLayers] = useState<Record<LayerKey, boolean>>({
-    joints: true,
-    pumps: true,
-    fiber: true,
-    pylons: true,
-    solar: true,
+    halbach: true,
+    lim: true,
+    battery: true,
   });
 
   function toggleLayer(key: LayerKey) {
@@ -89,7 +78,7 @@ export default function ConduitViewer() {
 
   return (
     <div>
-      {/* VIEWER — brown dot grid background */}
+      {/* VIEWER */}
       <div
         style={{
           width: "100%",
@@ -100,7 +89,6 @@ export default function ConduitViewer() {
           backgroundColor: "var(--background)",
         }}
       >
-        <ViewControls mode={viewMode} onChange={setViewMode} />
         <Button
           variant="ghost"
           className="rounded-none absolute"
@@ -121,16 +109,16 @@ export default function ConduitViewer() {
             color: "var(--muted)",
             height: "auto",
             zIndex: 10,
-            transition: "color 0.15s",
             border: "1px solid var(--border)",
           }}
         >
           RESET
         </Button>
+
         <Canvas
           camera={{ position: DEFAULT_CAMERA, fov: 45, near: 0.1, far: 1000 }}
           style={{ background: "transparent" }}
-          gl={{ antialias: true, localClippingEnabled: true }}
+          gl={{ antialias: true }}
         >
           <Suspense
             fallback={
@@ -162,24 +150,20 @@ export default function ConduitViewer() {
               autoRotate
               autoRotateSpeed={0.4}
             />
-            <TubeGeometry viewMode={viewMode} activeHotspot={activeHotspot} />
-            <ExpansionJoints show={layers.joints} viewMode={viewMode} activeHotspot={activeHotspot} />
-            <VacuumPumpStation show={layers.pumps} viewMode={viewMode} activeHotspot={activeHotspot} />
-            <FiberOpticCable show={layers.fiber} activeHotspot={activeHotspot} />
-            <PylonStructure show={layers.pylons} activeHotspot={activeHotspot} />
-            <SolarFilm show={layers.solar} viewMode={viewMode} activeHotspot={activeHotspot} />
+            <FluxTubeContext />
+            <HalbachTrack show={layers.halbach} activeHotspot={activeHotspot} />
+            <LIMStators show={layers.lim} activeHotspot={activeHotspot} />
+            <BatterySystem show={layers.battery} activeHotspot={activeHotspot} />
             <CameraController target={cameraTarget} onReached={handleCameraReached} />
-            <HotspotLayer
-              activeId={activeHotspot}
-              onHotspotClick={handleHotspotClick}
-            />
-            <ZoomDetailManager />
+            <FluxHotspotLayer activeId={activeHotspot} onHotspotClick={handleHotspotClick} />
           </Suspense>
         </Canvas>
-        <SpecPanel
+
+        <FluxSpecPanel
           hotspotId={specPanelOpen ? activeHotspot : null}
           onClose={handlePanelClose}
         />
+
         <div
           style={{
             position: "absolute",
@@ -197,7 +181,7 @@ export default function ConduitViewer() {
         </div>
       </div>
 
-      {/* LAYER TOGGLES — below viewer, not overlapping */}
+      {/* LAYER TOGGLES — below viewer */}
       <div
         style={{
           padding: "16px 32px",
@@ -206,6 +190,7 @@ export default function ConduitViewer() {
           flexWrap: "wrap",
           borderBottom: "1px solid var(--border)",
           backgroundColor: "var(--background-secondary)",
+          alignItems: "center",
         }}
       >
         <p
@@ -216,7 +201,6 @@ export default function ConduitViewer() {
             color: "var(--muted)",
             fontFamily: font,
             marginRight: "12px",
-            alignSelf: "center",
             whiteSpace: "nowrap",
           }}
         >
