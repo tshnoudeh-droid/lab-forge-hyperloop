@@ -1,13 +1,9 @@
 "use client";
 
-import { TUBE } from "@/components/conduit/data/conduit-specs";
-import { POD } from "./data/shell-specs";
+import { POD, SHELL_GEOMETRY } from "./data/shell-specs";
 
-const FLOOR_Y = -(TUBE.innerRadius - 0.02);
-const POD_Y = FLOOR_Y + 0.10 + POD.outerRadius;
-
-// Interior floor sits above pod bottom
-const CABIN_FLOOR_Y = POD_Y - POD.innerRadius + 0.28;
+// Cabin floor: pod inner bottom (world Y) + raised floor panel
+const CABIN_FLOOR_Y = SHELL_GEOMETRY.POD_Y - POD.innerRadius * SHELL_GEOMETRY.POD_SCALE_Y + 0.28;
 
 const SEAT_COLOR = "#C4A882";
 const SEAT_FRAME = "#2a2018";

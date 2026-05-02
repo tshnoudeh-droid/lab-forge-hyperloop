@@ -3,8 +3,7 @@
 import * as THREE from "three";
 import { useMemo } from "react";
 import { Text } from "@react-three/drei";
-import { TUBE } from "@/components/conduit/data/conduit-specs";
-import { POD } from "./data/shell-specs";
+import { POD, SHELL_GEOMETRY } from "./data/shell-specs";
 
 interface PodShellProps {
   show: boolean;
@@ -12,237 +11,266 @@ interface PodShellProps {
   variant?: "cargo" | "passenger";
 }
 
-const BRAND = "#C4A882";
-const BAND_COLOR = "#7a5c3a";
-const TEXT_COLOR = "#0a0a0a";
-const HOTSPOT_IDS = ["S01", "S02"];
+const BRONZE = "#7a5520";
+const BRONZE_DARK = "#4a3010";
+const BRONZE_LIGHT = "#9a7040";
+const CREAM = "#f0e8d0";
 
-const FLOOR_Y = -(TUBE.innerRadius - 0.02);
-const POD_Y = FLOOR_Y + 0.10 + POD.outerRadius;
+const { POD_Y, POD_SCALE_Y, UNDERBODY_H, SCALED_R_Y } = SHELL_GEOMETRY;
+const BODY_BOTTOM_Y = POD_Y - SCALED_R_Y; // -1.145m
 
-// XP-1 inspired torpedo profile — revolves around Y axis
-// y spans -8 (nose tip) to +8 (tail tip), x = radius
+// Blunt hemispherical nose — max radius reached by z = -5m (fast flare)
 function makePodProfile(): THREE.Vector2[] {
-  const R = POD.outerRadius;
-  const pts: THREE.Vector2[] = [];
-  // Nose section: y = -8 to -4 (sinusoidal flare — blunt rounded nose like XP-1)
-  const NOSE_SEGS = 8;
-  for (let i = 0; i <= NOSE_SEGS; i++) {
-    const t = i / NOSE_SEGS;
-    pts.push(new THREE.Vector2(R * Math.sin((t * Math.PI) / 2), -8 + 4 * t));
-  }
-  // Constant body: y = -4 to +4
-  pts.push(new THREE.Vector2(R, 4));
-  // Tail section: y = +4 to +8 (mirror of nose)
-  for (let i = 1; i <= NOSE_SEGS; i++) {
-    const t = i / NOSE_SEGS;
-    pts.push(new THREE.Vector2(R * Math.cos((t * Math.PI) / 2), 4 + 4 * t));
-  }
-  return pts;
+  return (
+    [
+      [0.0, -8.0], [0.4, -7.5], [0.82, -7.0],
+      [1.1, -6.5], [1.24, -6.0], [1.29, -5.5], [1.3, -5.0],
+      [1.3,  5.0],
+      [1.28, 5.5], [1.2, 6.0], [1.05, 6.5],
+      [0.82, 7.0], [0.62, 7.4], [0.45, 8.0],
+    ] as [number, number][]
+  ).map(([r, h]) => new THREE.Vector2(r, h));
 }
 
-// Raised branding band — slight proud ridge at mid-body
-function makeBandProfile(): THREE.Vector2[] {
-  const R = POD.outerRadius;
-  return [
-    new THREE.Vector2(R - 0.001, -2.9),
-    new THREE.Vector2(R + 0.006, -2.7),
-    new THREE.Vector2(R + 0.006, 2.7),
-    new THREE.Vector2(R - 0.001, 2.9),
-  ];
+function makeNoseProfile(): THREE.Vector2[] {
+  return (
+    [
+      [0.0, -8.0], [0.4, -7.5], [0.82, -7.0],
+      [1.1, -6.5], [1.24, -6.0], [1.29, -5.5],
+    ] as [number, number][]
+  ).map(([r, h]) => new THREE.Vector2(r, h));
 }
 
-// Panel line ring profile
-function makeRingProfile(z: number): THREE.Vector2[] {
-  const R = POD.outerRadius;
-  return [
-    new THREE.Vector2(R - 0.001, z - 0.012),
-    new THREE.Vector2(R + 0.008, z - 0.006),
-    new THREE.Vector2(R + 0.008, z + 0.006),
-    new THREE.Vector2(R - 0.001, z + 0.012),
-  ];
-}
+const RING_Z = [-3.5, -1.75, 0, 1.75, 3.5] as const;
+const TAIL_RING_RADII = [0.4, 0.32, 0.26, 0.2, 0.14, 0.08] as const;
+const GRILLE_SLATS = 8;
 
 export default function PodShell({ show, activeHotspot, variant = "cargo" }: PodShellProps) {
   if (!show) return null;
 
-  const highlighted = HOTSPOT_IDS.includes(activeHotspot ?? "");
   const noseHighlighted = activeHotspot === "S01";
+  const highlighted = noseHighlighted || activeHotspot === "S02";
+  const isCargo = variant === "cargo";
 
   const podProfile = useMemo(() => makePodProfile(), []);
-  const bandProfile = useMemo(() => makeBandProfile(), []);
+  const noseProfile = useMemo(() => makeNoseProfile(), []);
 
-  // Passenger cutaway: clip the +X quadrant so camera at [12,6,20] sees interior
-  const clipPlanes = useMemo(() => {
-    if (variant === "passenger") {
-      return [new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0.1)];
-    }
-    return [];
-  }, [variant]);
+  const emissive = highlighted ? "#7a5020" : "#000000";
+  const ei = highlighted ? 0.28 : 0;
 
-  const isCargo = variant === "cargo";
-  const podOpacity = isCargo ? 0.22 : 1.0;
-
-  const emissive = highlighted ? "#8a7060" : "#000000";
-  const ei = highlighted ? 0.35 : 0;
-
-  // Panel line ring Z positions on the body section
-  const RING_Z = [-3.5, -1.75, 0, 1.75, 3.5];
+  const clipPlanes = useMemo(
+    () =>
+      variant === "passenger"
+        ? [new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0.1)]
+        : [],
+    [variant]
+  );
 
   return (
-    <group position={[0, POD_Y, 0]}>
+    <>
+      {/* SCALED GROUP — body geometry squished Y × 0.55 for wide/flat DX-1 proportions */}
+      <group position={[0, POD_Y, 0]} scale={[1, POD_SCALE_Y, 1]}>
 
-      {/* Main pod exterior — LatheGeometry torpedo */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <latheGeometry args={[podProfile, 64]} />
-        <meshStandardMaterial
-          color={BRAND}
-          emissive={emissive}
-          emissiveIntensity={ei}
-          roughness={0.42}
-          metalness={0.14}
-          transparent={isCargo}
-          opacity={podOpacity}
-          clippingPlanes={clipPlanes}
-          clipShadows
-        />
-      </mesh>
-
-      {/* Inner surface visible during passenger cutaway */}
-      {variant === "passenger" && (
+        {/* Main hull */}
         <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[POD.innerRadius, POD.innerRadius, POD.fuselageLength + 7.8, 64, 1, true]} />
+          <latheGeometry args={[podProfile, 64]} />
           <meshStandardMaterial
-            color="#e8e2d6"
-            side={THREE.BackSide}
-            roughness={0.75}
-            metalness={0.0}
-            clippingPlanes={clipPlanes}
-          />
-        </mesh>
-      )}
-
-      {/* Forward nose-cone highlight ring */}
-      {noseHighlighted && (
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <latheGeometry args={[
-            [new THREE.Vector2(0, -8), new THREE.Vector2(0.22, -7.4), new THREE.Vector2(0.68, -6.3), new THREE.Vector2(1.12, -5.1), new THREE.Vector2(1.28 + 0.01, -3.9)],
-            32
-          ]} />
-          <meshStandardMaterial
-            color={BRAND}
-            emissive="#9a8060"
-            emissiveIntensity={0.6}
-            roughness={0.3}
-            metalness={0.2}
-          />
-        </mesh>
-      )}
-
-      {/* Branding band — darker raised ridge along mid-body */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <latheGeometry args={[bandProfile, 64]} />
-        <meshStandardMaterial
-          color={BAND_COLOR}
-          emissive={emissive}
-          emissiveIntensity={ei * 0.5}
-          roughness={0.5}
-          metalness={0.2}
-          transparent={isCargo}
-          opacity={isCargo ? 0.4 : 1.0}
-        />
-      </mesh>
-
-      {/* Panel line rings — circumferential seams */}
-      {RING_Z.map((z) => (
-        <mesh key={z} rotation={[Math.PI / 2, 0, 0]}>
-          <latheGeometry args={[makeRingProfile(z), 48]} />
-          <meshStandardMaterial
-            color={highlighted ? "#5a3a1a" : "#6a4a2a"}
+            color={BRONZE}
             emissive={emissive}
-            emissiveIntensity={ei * 0.3}
-            roughness={0.55}
-            metalness={0.3}
+            emissiveIntensity={ei}
+            roughness={0.38}
+            metalness={0.72}
+            transparent={isCargo}
+            opacity={isCargo ? 0.25 : 1.0}
+            clippingPlanes={clipPlanes}
+            clipShadows
+          />
+        </mesh>
+
+        {/* Nose highlight overlay */}
+        {noseHighlighted && (
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <latheGeometry args={[noseProfile, 32]} />
+            <meshStandardMaterial
+              color={BRONZE_LIGHT}
+              emissive="#9a7040"
+              emissiveIntensity={0.7}
+              roughness={0.25}
+              metalness={0.8}
+            />
+          </mesh>
+        )}
+
+        {/* Interior barrel (passenger cutaway) */}
+        {variant === "passenger" && (
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[POD.innerRadius, POD.innerRadius, 14.0, 64, 1, true]} />
+            <meshStandardMaterial
+              color="#e8e2d6"
+              side={THREE.BackSide}
+              roughness={0.75}
+              metalness={0}
+              clippingPlanes={clipPlanes}
+            />
+          </mesh>
+        )}
+
+        {/* Panel seam rings — circumferential at body-section Z positions */}
+        {RING_Z.map((z) => (
+          <mesh key={z} position={[0, 0, z]}>
+            <torusGeometry args={[POD.outerRadius + 0.006, 0.007, 6, 64]} />
+            <meshStandardMaterial
+              color={BRONZE_DARK}
+              roughness={0.5}
+              metalness={0.6}
+              transparent={isCargo}
+              opacity={isCargo ? 0.5 : 1.0}
+            />
+          </mesh>
+        ))}
+
+        {/* Tail concentric rings — largest outer to innermost red */}
+        {TAIL_RING_RADII.map((r, i) => (
+          <mesh key={r} position={[0, 0, 8.0]}>
+            <torusGeometry args={[r, 0.009, 8, 48]} />
+            <meshStandardMaterial
+              color={i === TAIL_RING_RADII.length - 1 ? "#cc2200" : BRONZE_DARK}
+              roughness={0.35}
+              metalness={0.8}
+            />
+          </mesh>
+        ))}
+
+        {/* Tail backing disk */}
+        <mesh position={[0, 0, 8.0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.43, 0.43, 0.012, 48]} />
+          <meshStandardMaterial color="#1e1006" roughness={0.55} metalness={0.6} />
+        </mesh>
+
+        {/* Red center port */}
+        <mesh position={[0, 0, 8.02]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.07, 0.07, 0.016, 32]} />
+          <meshStandardMaterial color="#cc2200" emissive="#881100" emissiveIntensity={0.5} roughness={0.3} metalness={0.5} />
+        </mesh>
+
+        {/* Top grille panels — two recessed vents */}
+        {([-2.6, 2.6] as number[]).map((z) => (
+          <group key={z} position={[0, POD.outerRadius - 0.004, z]}>
+            <mesh>
+              <boxGeometry args={[0.62, 0.016, 0.86]} />
+              <meshStandardMaterial color="#1e1006" roughness={0.7} metalness={0.3} />
+            </mesh>
+            {Array.from({ length: GRILLE_SLATS }).map((_, si) => {
+              const sz = -0.35 + si * (0.7 / (GRILLE_SLATS - 1));
+              return (
+                <mesh key={si} position={[0, 0.012, sz]}>
+                  <boxGeometry args={[0.52, 0.008, 0.06]} />
+                  <meshStandardMaterial color={BRONZE_DARK} roughness={0.4} metalness={0.7} />
+                </mesh>
+              );
+            })}
+          </group>
+        ))}
+
+        {/* Top spine — longitudinal centerline ridge */}
+        <mesh position={[0, POD.outerRadius + 0.004, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.013, 0.013, 9.8, 8]} />
+          <meshStandardMaterial
+            color={BRONZE_LIGHT}
+            metalness={0.72}
+            roughness={0.32}
             transparent={isCargo}
             opacity={isCargo ? 0.5 : 1.0}
           />
         </mesh>
-      ))}
 
-      {/* Longitudinal spine — top centerline structural element */}
-      <mesh position={[0, POD.outerRadius - 0.005, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.016, 0.016, POD.fuselageLength * 0.82, 8]} />
+      </group>
+
+      {/* OUTSIDE SCALED GROUP — flat panels and text (no Y squish) */}
+
+      {/* Underbody flat panel */}
+      <mesh position={[0, BODY_BOTTOM_Y - UNDERBODY_H / 2, 0]}>
+        <boxGeometry args={[1.78, UNDERBODY_H, 13.4]} />
         <meshStandardMaterial
-          color={highlighted ? BRAND : "#5a3a1a"}
-          emissive={emissive}
-          emissiveIntensity={ei * 0.4}
-          metalness={0.6}
-          roughness={0.4}
+          color={BRONZE_DARK}
+          roughness={0.55}
+          metalness={0.5}
           transparent={isCargo}
-          opacity={isCargo ? 0.6 : 1.0}
+          opacity={isCargo ? 0.28 : 1.0}
         />
       </mesh>
 
-      {/* Emergency hatch outline — top center */}
-      {[-0.54, 0.54].map((z) => (
-        <mesh key={z} position={[0, POD.outerRadius + 0.005, z]}>
-          <boxGeometry args={[0.68, 0.006, 0.006]} />
-          <meshStandardMaterial
-            color="#5a3a1a"
-            transparent={isCargo}
-            opacity={isCargo ? 0.6 : 0.8}
-          />
+      {/* Chine lines at body-to-underbody junction */}
+      {([-0.86, 0.86] as number[]).map((x) => (
+        <mesh key={x} position={[x, BODY_BOTTOM_Y + 0.002, 0]}>
+          <boxGeometry args={[0.015, 0.006, 14.0]} />
+          <meshStandardMaterial color={BRONZE_LIGHT} roughness={0.28} metalness={0.8} />
         </mesh>
       ))}
-      <mesh position={[0.34, POD.outerRadius + 0.005, 0]}>
-        <boxGeometry args={[0.006, 0.006, 1.08]} />
-        <meshStandardMaterial color="#5a3a1a" transparent={isCargo} opacity={isCargo ? 0.6 : 0.8} />
-      </mesh>
-      <mesh position={[-0.34, POD.outerRadius + 0.005, 0]}>
-        <boxGeometry args={[0.006, 0.006, 1.08]} />
-        <meshStandardMaterial color="#5a3a1a" transparent={isCargo} opacity={isCargo ? 0.6 : 0.8} />
-      </mesh>
 
       {/* Nose sensor ports */}
-      {([-0.28, 0.28] as number[]).map((x) => (
-        <mesh key={x} position={[x, POD.outerRadius * 0.55, -(POD.fuselageLength / 2 + 0.38)]}>
-          <cylinderGeometry args={[0.038, 0.038, 0.018, 10]} />
-          <meshStandardMaterial
-            color={highlighted ? BRAND : "#3a2a1a"}
-            emissive={emissive}
-            emissiveIntensity={ei}
-            metalness={0.8}
-            roughness={0.2}
-          />
+      {([-0.26, 0.26] as number[]).map((x) => (
+        <mesh key={x} position={[x, POD_Y, -8.12]}>
+          <cylinderGeometry args={[0.034, 0.034, 0.018, 10]} />
+          <meshStandardMaterial color={BRONZE_LIGHT} roughness={0.22} metalness={0.88} />
         </mesh>
       ))}
 
-      {/* Branding text — on +X side, mid-body */}
+      {/* "FORGE" large side branding */}
       <Text
-        position={[POD.outerRadius + 0.04, 0.22, 1.2]}
+        position={[POD.outerRadius + 0.05, POD_Y + 0.2, 1.6]}
         rotation={[0, Math.PI / 2, 0]}
-        fontSize={0.13}
-        color={TEXT_COLOR}
+        fontSize={0.4}
+        color={CREAM}
+        anchorX="center"
+        anchorY="middle"
+        letterSpacing={0.12}
+        maxWidth={5}
+      >
+        FORGE
+      </Text>
+
+      {/* "HYPERLOOP DX - 1" subtitle */}
+      <Text
+        position={[POD.outerRadius + 0.05, POD_Y - 0.14, 1.6]}
+        rotation={[0, Math.PI / 2, 0]}
+        fontSize={0.125}
+        color={CREAM}
+        anchorX="center"
+        anchorY="middle"
+        letterSpacing={0.18}
+        maxWidth={5}
+      >
+        HYPERLOOP  DX - 1
+      </Text>
+
+      {/* "F" logo on top surface */}
+      <Text
+        position={[0, POD_Y + SCALED_R_Y + 0.015, 1.3]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        fontSize={0.52}
+        color={CREAM}
+        anchorX="center"
+        anchorY="middle"
+        letterSpacing={0}
+        maxWidth={2}
+      >
+        F
+      </Text>
+
+      {/* "DX-1" on top surface */}
+      <Text
+        position={[0, POD_Y + SCALED_R_Y + 0.015, -0.7]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        fontSize={0.2}
+        color={CREAM}
         anchorX="center"
         anchorY="middle"
         letterSpacing={0.14}
-        maxWidth={4}
-      >
-        FORGE HYPERLOOP
-      </Text>
-      <Text
-        position={[POD.outerRadius + 0.04, -0.14, 1.2]}
-        rotation={[0, Math.PI / 2, 0]}
-        fontSize={0.22}
-        color={TEXT_COLOR}
-        anchorX="center"
-        anchorY="middle"
-        letterSpacing={0.08}
         maxWidth={2}
       >
         DX-1
       </Text>
-
-    </group>
+    </>
   );
 }

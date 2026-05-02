@@ -1,8 +1,7 @@
 "use client";
 
 import * as THREE from "three";
-import { TUBE } from "@/components/conduit/data/conduit-specs";
-import { POD } from "./data/shell-specs";
+import { POD, SHELL_GEOMETRY } from "./data/shell-specs";
 
 interface PressureVesselProps {
   show: boolean;
@@ -11,8 +10,7 @@ interface PressureVesselProps {
 
 const HIGHLIGHT = "#C4A882";
 const HOTSPOT_ID = "S02";
-const FLOOR_Y = -(TUBE.innerRadius - 0.02);
-const POD_Y = FLOOR_Y + 0.10 + POD.outerRadius;
+const POD_Y = SHELL_GEOMETRY.POD_Y;
 const HALF_FUSE = POD.fuselageLength / 2;
 // Pressure vessel extends slightly inside nose/tail fairings
 const VESSEL_LENGTH = POD.fuselageLength + 2.0;

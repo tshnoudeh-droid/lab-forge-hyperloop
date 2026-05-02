@@ -31,6 +31,19 @@ export const AERODYNAMICS = {
   source: "European Hyperloop Centre technical briefing; aerodynamic optimization literature",
 };
 
+// Geometry scaling constants shared across all shell components
+// POD_SCALE_Y flattens the LatheGeometry height to get width > height cross-section
+// Tube: innerRadius 1.65m, FLOOR_Y = -1.63m
+// POD_Y = FLOOR_Y + LEV_GAP + SKID_H + UNDERBODY_H + (outerRadius * POD_SCALE_Y)
+//       = -1.63 + 0.10 + 0.065 + 0.32 + (1.30 * 0.55) = -0.43
+export const SHELL_GEOMETRY = {
+  POD_SCALE_Y: 0.55,    // LatheGeometry Y scale — makes width 1.6x height
+  UNDERBODY_H: 0.32,    // m — underbody panel height below main body
+  SKID_H: 0.065,        // m — levitation skid height
+  POD_Y: -0.43,         // m — pod body center in world Y
+  SCALED_R_Y: 0.715,    // m — effective vertical radius (outerRadius * POD_SCALE_Y)
+};
+
 export const LEVITATION_SKID = {
   material: "Aluminum alloy 6061-T6",
   position: "Bottom centerline",
@@ -75,7 +88,7 @@ export const SHELL_HOTSPOTS: ShellHotspotData[] = [
   {
     id: "S02",
     label: "PRESSURE VESSEL",
-    position: [1.4, 0.5, 0],
+    position: [1.35, 0.18, 0],
     keyStat: "101.2 kPa differential. SF 4.0. 80mm CFRP wall",
     explanation:
       "The pod maintains 1 standard atmosphere (101,325 Pa) internally while operating in 100 Pa tube vacuum — a 101.2 kPa inward pressure differential. The same physics as the tube wall hoop stress problem but applied in reverse: the pod shell must resist implosion. An 80mm carbon fiber composite wall with aluminum honeycomb core provides safety factor 4.0 against the differential loading. Wall geometry and material match aircraft pressure vessel certification standards.",

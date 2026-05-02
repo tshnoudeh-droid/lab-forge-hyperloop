@@ -1,11 +1,7 @@
 "use client";
 
-import { TUBE } from "@/components/conduit/data/conduit-specs";
-import { POD } from "./data/shell-specs";
+import { POD, SHELL_GEOMETRY } from "./data/shell-specs";
 import { Text } from "@react-three/drei";
-
-const FLOOR_Y = -(TUBE.innerRadius - 0.02);
-const POD_Y = FLOOR_Y + 0.10 + POD.outerRadius;
 
 // Container dimensions — scaled to fit inside 1.22m inner radius pod
 const CTR_L = 5.2;   // m length (along Z)
@@ -13,8 +9,9 @@ const CTR_W = 1.78;  // m width (along X)
 const CTR_H = 1.36;  // m height (along Y)
 const CTR_RIBS = 10; // corrugation ribs per long side
 
-// Container sits on pod floor: bottom at y = POD_Y - (POD.innerRadius - 0.12)
-const CTR_Y = POD_Y - POD.innerRadius + CTR_H / 2 + 0.06;
+// Floor of pod interior in world Y = POD_Y - innerRadius × POD_SCALE_Y
+const CTR_FLOOR_Y = SHELL_GEOMETRY.POD_Y - POD.innerRadius * SHELL_GEOMETRY.POD_SCALE_Y;
+const CTR_Y = CTR_FLOOR_Y + CTR_H / 2 + 0.06;
 
 const CONTAINER_COLOR = "#1a3a52";
 const CONTAINER_DARK = "#112a3f";

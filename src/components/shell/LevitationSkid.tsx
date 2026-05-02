@@ -1,7 +1,7 @@
 "use client";
 
 import { TUBE } from "@/components/conduit/data/conduit-specs";
-import { POD, LEVITATION_SKID } from "./data/shell-specs";
+import { POD, LEVITATION_SKID, SHELL_GEOMETRY } from "./data/shell-specs";
 
 interface LevitationSkidProps {
   show: boolean;
@@ -12,14 +12,16 @@ const HIGHLIGHT = "#C4A882";
 const HOTSPOT_ID = "S03";
 const FLOOR_Y = -(TUBE.innerRadius - 0.02);
 const LEV_GAP = 0.10;
-const POD_Y = FLOOR_Y + LEV_GAP + POD.outerRadius;
 
-const SKID_H = 0.065;
+const SKID_H = SHELL_GEOMETRY.SKID_H;
 const SKID_W = LEVITATION_SKID.widthM;
 const SKID_L = POD.fuselageLength + 1.4;
-const SKID_Y = POD_Y - POD.outerRadius + SKID_H / 2;
+// Skid position derived from floor + levitation gap (independent of pod body center)
+const SKID_Y = FLOOR_Y + LEV_GAP + SKID_H / 2;
 
-// Halbach track reference line (for gap visualization)
+// Bracket attachment point: bottom of scaled pod body
+const BRACKET_Y = SHELL_GEOMETRY.POD_Y - SHELL_GEOMETRY.SCALED_R_Y + 0.12;
+
 const TRACK_Y = FLOOR_Y;
 
 export default function LevitationSkid({ show, activeHotspot }: LevitationSkidProps) {
@@ -46,7 +48,7 @@ export default function LevitationSkid({ show, activeHotspot }: LevitationSkidPr
 
       {/* Skid attachment brackets — at each panel line */}
       {[-3.5, -1.75, 0, 1.75, 3.5].map((z) => (
-        <mesh key={z} position={[0, POD_Y - POD.outerRadius + 0.12, z]}>
+        <mesh key={z} position={[0, BRACKET_Y, z]}>
           <boxGeometry args={[SKID_W * 0.7, 0.22, 0.06]} />
           <meshStandardMaterial
             color={highlighted ? HIGHLIGHT : "#888888"}
