@@ -17,14 +17,14 @@ const subsystems = [
     designation: "FH-DX-II",
     name: "FLUX",
     description: "Maglev track, Halbach array, LIM stator segments.",
-    status: "IN DEVELOPMENT",
+    status: "ACTIVE",
     href: "/flux",
   },
   {
     designation: "FH-DX-III",
     name: "SHELL",
     description: "Pod exterior, nose cone, pressure vessel.",
-    status: "IN DEVELOPMENT",
+    status: "ACTIVE",
     href: "/shell",
   },
 ];
