@@ -9,11 +9,15 @@ import ShellTubeContext from "./ShellTubeContext";
 import PodShell from "./PodShell";
 import PressureVessel from "./PressureVessel";
 import LevitationSkid from "./LevitationSkid";
+import CargoModule from "./CargoModule";
+import PassengerModule from "./PassengerModule";
 import ShellHotspotLayer from "./ShellHotspotLayer";
 import ShellSpecPanel from "./ShellSpecPanel";
 
 const DEFAULT_CAMERA: [number, number, number] = [12, 6, 20];
 const font = "Helvetica Neue, Helvetica, Arial, sans-serif";
+
+type Variant = "cargo" | "passenger";
 
 function CameraController({
   target,
@@ -42,18 +46,21 @@ const LAYER_TOGGLES = [
   { key: "shell", label: "POD SHELL" },
   { key: "vessel", label: "PRESSURE VESSEL" },
   { key: "skid", label: "LEVITATION SKID" },
+  { key: "tube", label: "TUBE CONTEXT" },
 ] as const;
 
 type LayerKey = (typeof LAYER_TOGGLES)[number]["key"];
 
 export default function ShellViewer() {
+  const [variant, setVariant] = useState<Variant>("cargo");
   const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
   const [cameraTarget, setCameraTarget] = useState<[number, number, number] | null>(null);
   const [specPanelOpen, setSpecPanelOpen] = useState(false);
   const [layers, setLayers] = useState<Record<LayerKey, boolean>>({
     shell: true,
-    vessel: true,
+    vessel: false,
     skid: true,
+    tube: false,
   });
 
   function toggleLayer(key: LayerKey) {
@@ -89,6 +96,43 @@ export default function ShellViewer() {
           backgroundColor: "var(--background)",
         }}
       >
+        {/* VARIANT SELECTOR — top left */}
+        <div
+          style={{
+            position: "absolute",
+            top: "16px",
+            left: "16px",
+            display: "flex",
+            gap: "4px",
+            zIndex: 10,
+          }}
+        >
+          {(["cargo", "passenger"] as Variant[]).map((v) => (
+            <button
+              key={v}
+              onClick={() => {
+                setVariant(v);
+                setActiveHotspot(null);
+                setSpecPanelOpen(false);
+              }}
+              style={{
+                padding: "6px 14px",
+                fontSize: "10px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                fontFamily: font,
+                background: variant === v ? "var(--color-accent)" : "var(--background)",
+                color: variant === v ? "var(--background)" : "var(--muted)",
+                border: `1px solid ${variant === v ? "var(--color-accent)" : "var(--border)"}`,
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}
+            >
+              {v}
+            </button>
+          ))}
+        </div>
+
         <Button
           variant="ghost"
           className="rounded-none absolute"
@@ -118,7 +162,7 @@ export default function ShellViewer() {
         <Canvas
           camera={{ position: DEFAULT_CAMERA, fov: 45, near: 0.1, far: 1000 }}
           style={{ background: "transparent" }}
-          gl={{ antialias: true }}
+          gl={{ antialias: true, localClippingEnabled: true }}
         >
           <Suspense
             fallback={
@@ -138,10 +182,11 @@ export default function ShellViewer() {
               </Html>
             }
           >
-            <ambientLight intensity={1.2} />
+            <ambientLight intensity={1.3} />
             <directionalLight position={[10, 20, 10]} intensity={2.0} />
             <directionalLight position={[-10, -5, -10]} intensity={0.4} color="#C4A882" />
             <directionalLight position={[-5, 8, -20]} intensity={1.4} />
+            <directionalLight position={[0, -10, 5]} intensity={0.6} color="#fff8f0" />
             <OrbitControls
               enabled={cameraTarget === null}
               enablePan={false}
@@ -150,10 +195,13 @@ export default function ShellViewer() {
               autoRotate
               autoRotateSpeed={0.4}
             />
-            <ShellTubeContext />
-            <PodShell show={layers.shell} activeHotspot={activeHotspot} />
+
+            {layers.tube && <ShellTubeContext />}
+            <PodShell show={layers.shell} activeHotspot={activeHotspot} variant={variant} />
             <PressureVessel show={layers.vessel} activeHotspot={activeHotspot} />
             <LevitationSkid show={layers.skid} activeHotspot={activeHotspot} />
+            <CargoModule show={variant === "cargo"} />
+            <PassengerModule show={variant === "passenger"} />
             <CameraController target={cameraTarget} onReached={handleCameraReached} />
             <ShellHotspotLayer activeId={activeHotspot} onHotspotClick={handleHotspotClick} />
           </Suspense>
@@ -181,7 +229,7 @@ export default function ShellViewer() {
         </div>
       </div>
 
-      {/* LAYER TOGGLES — below viewer */}
+      {/* LAYER TOGGLES */}
       <div
         style={{
           padding: "16px 32px",
