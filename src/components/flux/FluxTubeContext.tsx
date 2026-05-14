@@ -3,7 +3,8 @@
 import * as THREE from "three";
 import { TUBE } from "@/components/conduit/data/conduit-specs";
 
-export default function FluxTubeContext() {
+export default function FluxTubeContext({ show }: { show: boolean }) {
+  if (!show) return null;
   return (
     <group>
       {/* Outer shell ghost */}

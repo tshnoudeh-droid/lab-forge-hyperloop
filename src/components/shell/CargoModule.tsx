@@ -3,10 +3,11 @@
 import { POD, SHELL_GEOMETRY } from "./data/shell-specs";
 import { Text } from "@react-three/drei";
 
-// Container dimensions — scaled to fit inside 1.22m inner radius pod
-const CTR_L = 5.2;   // m length (along Z)
-const CTR_W = 1.78;  // m width (along X)
-const CTR_H = 1.36;  // m height (along Y)
+// Container dimensions — pod inner height = 2 × innerRadius × POD_SCALE_Y = 2 × 1.22 × 0.55 = 1.342m
+// CTR_H must be < 1.342m to sit fully inside; 1.1m leaves 0.24m headroom
+const CTR_L = 5.0;   // m length (along Z)
+const CTR_W = 1.6;   // m width (along X)
+const CTR_H = 1.1;   // m height (along Y) — fits inside 1.342m pod inner height
 const CTR_RIBS = 10; // corrugation ribs per long side
 
 // Floor of pod interior in world Y = POD_Y - innerRadius × POD_SCALE_Y

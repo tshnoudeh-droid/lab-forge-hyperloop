@@ -91,6 +91,8 @@ export default function ShellViewer() {
           width: "100%",
           height: "clamp(500px, 60vh, 680px)",
           position: "relative",
+          backgroundImage: `radial-gradient(circle, var(--color-accent) 1px, transparent 1px)`,
+          backgroundSize: "28px 28px",
           backgroundColor: "var(--background)",
         }}
       >

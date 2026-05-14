@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Html } from "@react-three/drei";
+import { OrbitControls, Html, Environment } from "@react-three/drei";
 import { Suspense, useState, useRef } from "react";
 import * as THREE from "three";
 import { Button } from "@/components/ui/button";
@@ -42,6 +42,7 @@ const LAYER_TOGGLES = [
   { key: "halbach", label: "HALBACH TRACK" },
   { key: "lim", label: "LIM STATOR" },
   { key: "battery", label: "BATTERY SYSTEM" },
+  { key: "tube", label: "TUBE CONTEXT" },
 ] as const;
 
 type LayerKey = (typeof LAYER_TOGGLES)[number]["key"];
@@ -54,6 +55,7 @@ export default function FluxViewer() {
     halbach: true,
     lim: true,
     battery: true,
+    tube: true,
   });
 
   function toggleLayer(key: LayerKey) {
@@ -117,8 +119,9 @@ export default function FluxViewer() {
 
         <Canvas
           camera={{ position: DEFAULT_CAMERA, fov: 45, near: 0.1, far: 1000 }}
+          dpr={[1, 2]}
           style={{ background: "transparent" }}
-          gl={{ antialias: true }}
+          gl={{ antialias: true, localClippingEnabled: true }}
         >
           <Suspense
             fallback={
@@ -138,10 +141,12 @@ export default function FluxViewer() {
               </Html>
             }
           >
-            <ambientLight intensity={1.2} />
-            <directionalLight position={[10, 20, 10]} intensity={2.0} />
-            <directionalLight position={[-10, -5, -10]} intensity={0.4} color="#C4A882" />
-            <directionalLight position={[-5, 8, -20]} intensity={1.4} />
+            <Environment preset="studio" />
+            <ambientLight intensity={0.4} />
+            <directionalLight position={[10, 20, 10]} intensity={1.8} />
+            <directionalLight position={[-10, -5, -10]} intensity={0.5} color="#C4A882" />
+            <directionalLight position={[-5, 8, -20]} intensity={1.2} />
+            <directionalLight position={[0, -10, 5]} intensity={0.4} color="#fff8f0" />
             <OrbitControls
               enabled={cameraTarget === null}
               enablePan={false}
@@ -150,7 +155,7 @@ export default function FluxViewer() {
               autoRotate
               autoRotateSpeed={0.4}
             />
-            <FluxTubeContext />
+            <FluxTubeContext show={layers.tube} />
             <HalbachTrack show={layers.halbach} activeHotspot={activeHotspot} />
             <LIMStators show={layers.lim} activeHotspot={activeHotspot} />
             <BatterySystem show={layers.battery} activeHotspot={activeHotspot} />
