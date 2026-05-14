@@ -24,7 +24,7 @@ export default function ConduitPage() {
         {/* BACK BUTTON */}
         <div style={{ padding: "0 32px 24px" }}>
           <Link
-            href="/"
+            href="/designs/dx-i"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -39,7 +39,7 @@ export default function ConduitPage() {
             }}
           >
             <span style={{ fontSize: "16px", lineHeight: 1 }}>&#8592;</span>
-            Back
+            DX-I
           </Link>
         </div>
 

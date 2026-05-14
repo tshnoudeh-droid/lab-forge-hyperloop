@@ -36,9 +36,7 @@ export default function Nav() {
       </Link>
       <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
         {[
-          { href: "/conduit", label: "CONDUIT" },
-          { href: "/flux", label: "FLUX" },
-          { href: "/shell", label: "SHELL" },
+          { href: "/designs/dx-i", label: "DESIGNS" },
         ].map(({ href, label }) => (
           <Link
             key={href}

@@ -20,10 +20,16 @@ Each subsystem (Conduit, Flux, Shell) is self-contained in its own component fol
 - Generous negative space
 - Specs in data rows, not cards
 
+## Site Structure
+- `/` = Lab home (the website)
+- `/designs/dx-i` = DX-I hub (Design Cycle One)
+- `/designs/dx-i/conduit|flux|shell` = subsystem pages
+
 ## Folder Discipline
 - All Conduit code: src/components/conduit/
 - All Flux code: src/components/flux/
 - All Shell code: src/components/shell/
+- Route pages: src/app/designs/dx-i/
 - Shared UI only: src/components/ui/
 
 ## Physics Discipline

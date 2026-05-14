@@ -1,15 +1,15 @@
 import Link from "next/link";
-import FluxViewerClient from "@/components/flux/FluxViewerClient";
-import { MAGLEV, BATTERY } from "@/components/flux/data/flux-specs";
+import ShellViewerClient from "@/components/shell/ShellViewerClient";
+import { POD, PRESSURE_VESSEL, AERODYNAMICS, LEVITATION_SKID } from "@/components/shell/data/shell-specs";
 
 const font = "Helvetica Neue, Helvetica, Arial, sans-serif";
 
 export const metadata = {
-  title: "FH-DX-II Flux — Forge Hyperloop Lab",
-  description: "Physics-backed 3D model of the Forge Hyperloop propulsion and levitation system.",
+  title: "FH-DX-III Shell — Forge Hyperloop Lab",
+  description: "Physics-backed 3D model of the Forge Hyperloop pod exterior, pressure vessel, and levitation interface.",
 };
 
-export default function Flux() {
+export default function Shell() {
   return (
     <main
       style={{
@@ -23,7 +23,7 @@ export default function Flux() {
         {/* BACK BUTTON */}
         <div style={{ padding: "0 32px 24px" }}>
           <Link
-            href="/"
+            href="/designs/dx-i"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -37,7 +37,7 @@ export default function Flux() {
             }}
           >
             <span style={{ fontSize: "16px", lineHeight: 1 }}>&#8592;</span>
-            Back
+            DX-I
           </Link>
         </div>
 
@@ -54,7 +54,7 @@ export default function Flux() {
               fontWeight: 500,
             }}
           >
-            FH-DX-II
+            FH-DX-III
           </p>
           <h1
             style={{
@@ -67,7 +67,7 @@ export default function Flux() {
               fontFamily: font,
             }}
           >
-            FLUX
+            SHELL
           </h1>
           <p
             style={{
@@ -80,11 +80,11 @@ export default function Flux() {
               letterSpacing: "0.01em",
             }}
           >
-            Propulsion and levitation. A passive {MAGLEV.trackType} maglev track paired
-            with {MAGLEV.propulsionType} stators on the tube wall. {MAGLEV.levitationMode}.
-            {" "}{MAGLEV.motorMode}. Regenerative braking energy feeds directly
-            into trackside {BATTERY.chemistry} battery buffers — decoupling propulsion
-            from real-time grid demand.
+            Pod exterior and pressure vessel. A {POD.material} aeroshell designed
+            for the {AERODYNAMICS.dragAtCruise_N} N drag environment of the Conduit.
+            The vessel maintains {(PRESSURE_VESSEL.internalPressurePa / 1000).toFixed(0)} kPa internally
+            against {PRESSURE_VESSEL.externalPressurePa} Pa tube vacuum, with safety factor {PRESSURE_VESSEL.safetyFactor}.
+            {" "}A passive Halbach levitation skid on the underside interfaces directly with the Flux track.
           </p>
 
           {/* KEY SPECS ROW */}
@@ -99,10 +99,10 @@ export default function Flux() {
             }}
           >
             {[
-              { label: "Levitation", value: MAGLEV.levitationMode },
-              { label: "Propulsion", value: MAGLEV.propulsionType },
-              { label: "Levitation Gap", value: `${MAGLEV.levitationGapM * 100} cm` },
-              { label: "Battery Capacity", value: `${BATTERY.capacityPerUnit_kWh} kWh` },
+              { label: "Outer Diameter", value: `${(POD.outerRadius * 2).toFixed(1)} m` },
+              { label: "Pod Length", value: `${POD.length} m` },
+              { label: "Pressure Diff.", value: `${PRESSURE_VESSEL.differentialKPa} kPa` },
+              { label: "Drag at Cruise", value: `${AERODYNAMICS.dragAtCruise_N} N` },
             ].map(({ label, value }) => (
               <div key={label}>
                 <p
@@ -138,9 +138,9 @@ export default function Flux() {
         <div style={{ borderTop: "1px solid var(--border)", margin: "36px 0 0" }} />
 
         {/* 3D VIEWER */}
-        <FluxViewerClient />
+        <ShellViewerClient />
 
-        {/* FLUX SPEC SHEET */}
+        {/* SHELL SPEC SHEET */}
         <div
           style={{
             padding: "80px 32px",
@@ -160,21 +160,22 @@ export default function Flux() {
               fontFamily: font,
             }}
           >
-            FH-DX-II Flux — Full Specification
+            FH-DX-III Shell — Full Specification
           </p>
 
-          {/* Propulsion */}
+          {/* Pod Structure */}
           <div style={{ marginBottom: "56px" }}>
             <p style={{ fontSize: "12px", letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--color-accent)", fontFamily: font, fontWeight: 600, marginBottom: "20px" }}>
-              Propulsion
+              Pod Structure
             </p>
             {[
-              { label: "Track type", value: MAGLEV.trackType },
-              { label: "Levitation mode", value: MAGLEV.levitationMode },
-              { label: "Nominal levitation gap", value: `${MAGLEV.levitationGapM * 100}`, unit: "cm" },
-              { label: "Propulsion type", value: MAGLEV.propulsionType },
-              { label: "Motor energized zone", value: MAGLEV.motorMode },
-              { label: "Braking mode", value: MAGLEV.brakingMode },
+              { label: "Material", value: POD.material },
+              { label: "Outer diameter", value: `${(POD.outerRadius * 2).toFixed(1)}`, unit: "m" },
+              { label: "Pod length", value: `${POD.length}`, unit: "m" },
+              { label: "Nose length", value: `${POD.noseLength}`, unit: "m" },
+              { label: "Fuselage length", value: `${POD.fuselageLength}`, unit: "m" },
+              { label: "Wall thickness", value: `${POD.wallThickness * 1000}`, unit: "mm" },
+              { label: "Bore clearance (each side)", value: `${(POD.boreGapM * 100).toFixed(0)}`, unit: "cm" },
             ].map((row) => (
               <div
                 key={row.label}
@@ -191,18 +192,19 @@ export default function Flux() {
             ))}
           </div>
 
-          {/* Energy Storage */}
+          {/* Pressure Vessel */}
           <div style={{ marginBottom: "56px" }}>
             <p style={{ fontSize: "12px", letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--color-accent)", fontFamily: font, fontWeight: 600, marginBottom: "20px" }}>
-              Energy Storage
+              Pressure Vessel
             </p>
             {[
-              { label: "Battery chemistry", value: BATTERY.chemistry },
-              { label: "Capacity per unit", value: `${BATTERY.capacityPerUnit_kWh}`, unit: "kWh" },
-              { label: "Station spacing", value: `${BATTERY.stationSpacingKm}`, unit: "km" },
-              { label: "Charge / discharge rate", value: `${BATTERY.chargeDischargeRateKW}`, unit: "kW" },
-              { label: "Cycle life", value: `${BATTERY.cycleLife.toLocaleString()}+`, unit: "cycles" },
-              { label: "Purpose", value: BATTERY.purpose, source: BATTERY.source },
+              { label: "Internal pressure", value: `${PRESSURE_VESSEL.internalPressurePa.toLocaleString()}`, unit: "Pa" },
+              { label: "External pressure (tube)", value: `${PRESSURE_VESSEL.externalPressurePa}`, unit: "Pa" },
+              { label: "Pressure differential", value: `${PRESSURE_VESSEL.differentialKPa}`, unit: "kPa" },
+              { label: "Safety factor", value: `${PRESSURE_VESSEL.safetyFactor}` },
+              { label: "Wall material", value: PRESSURE_VESSEL.wallMaterial },
+              { label: "Wall thickness", value: `${PRESSURE_VESSEL.wallThicknessMm}`, unit: "mm" },
+              { label: "Standard", value: "DO-2607B", source: PRESSURE_VESSEL.source },
             ].map((row) => (
               <div
                 key={row.label}
@@ -220,6 +222,59 @@ export default function Flux() {
                     <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "3px" }}>{row.source}</div>
                   )}
                 </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Aerodynamics */}
+          <div style={{ marginBottom: "56px" }}>
+            <p style={{ fontSize: "12px", letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--color-accent)", fontFamily: font, fontWeight: 600, marginBottom: "20px" }}>
+              Aerodynamics
+            </p>
+            {[
+              { label: "Nose profile", value: AERODYNAMICS.noseProfile },
+              { label: "Boattail angle", value: `${AERODYNAMICS.boattailAngleDeg}`, unit: "deg" },
+              { label: "Drag at 1,000 km/h (vacuum)", value: `${AERODYNAMICS.dragAtCruise_N}`, unit: "N" },
+              { label: "Drag power at cruise", value: `${AERODYNAMICS.dragPowerKW}`, unit: "kW" },
+            ].map((row) => (
+              <div
+                key={row.label}
+                style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "14px 0", borderBottom: "1px solid var(--border)", gap: "16px", fontFamily: font }}
+              >
+                <span style={{ fontSize: "14px", color: "var(--muted)" }}>{row.label}</span>
+                <span style={{ fontSize: "16px", fontWeight: 600, color: "var(--foreground)", flexShrink: 0 }}>
+                  {row.value}
+                  {"unit" in row && row.unit && (
+                    <span style={{ fontSize: "12px", color: "var(--muted)", marginLeft: "5px" }}>{row.unit}</span>
+                  )}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Levitation Interface */}
+          <div style={{ marginBottom: "56px" }}>
+            <p style={{ fontSize: "12px", letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--color-accent)", fontFamily: font, fontWeight: 600, marginBottom: "20px" }}>
+              Levitation Interface
+            </p>
+            {[
+              { label: "Skid material", value: LEVITATION_SKID.material },
+              { label: "Track interface", value: LEVITATION_SKID.interactionMode },
+              { label: "Nominal gap", value: `${LEVITATION_SKID.nominalGapMm}`, unit: "mm" },
+              { label: "Skid width", value: `${LEVITATION_SKID.widthM * 1000}`, unit: "mm" },
+              { label: "Power at cruise", value: "0", unit: "W" },
+            ].map((row) => (
+              <div
+                key={row.label}
+                style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "14px 0", borderBottom: "1px solid var(--border)", gap: "16px", fontFamily: font }}
+              >
+                <span style={{ fontSize: "14px", color: "var(--muted)" }}>{row.label}</span>
+                <span style={{ fontSize: "16px", fontWeight: 600, color: "var(--foreground)", flexShrink: 0 }}>
+                  {row.value}
+                  {"unit" in row && row.unit && (
+                    <span style={{ fontSize: "12px", color: "var(--muted)", marginLeft: "5px" }}>{row.unit}</span>
+                  )}
+                </span>
               </div>
             ))}
           </div>

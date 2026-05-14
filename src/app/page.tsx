@@ -5,30 +5,6 @@ import { motion } from "framer-motion";
 import FadeIn from "@/components/FadeIn";
 import { TiltCard } from "@/components/ui/tilt-card";
 
-const subsystems = [
-  {
-    designation: "FH-DX-I",
-    name: "CONDUIT",
-    description: "Tube shell, vacuum system, seals, pylons, sensors.",
-    status: "ACTIVE",
-    href: "/conduit",
-  },
-  {
-    designation: "FH-DX-II",
-    name: "FLUX",
-    description: "Maglev track, Halbach array, LIM stator segments.",
-    status: "ACTIVE",
-    href: "/flux",
-  },
-  {
-    designation: "FH-DX-III",
-    name: "SHELL",
-    description: "Pod exterior, nose cone, pressure vessel.",
-    status: "ACTIVE",
-    href: "/shell",
-  },
-];
-
 const font = "Helvetica Neue, Helvetica, Arial, sans-serif";
 
 export default function Home() {
@@ -188,10 +164,10 @@ export default function Home() {
         </FadeIn>
       </section>
 
-      {/* DX PROJECT */}
+      {/* DESIGNS */}
       <section
         style={{
-          padding: "0 32px 56px",
+          padding: "0 32px 96px",
           maxWidth: "900px",
           margin: "0 auto",
         }}
@@ -202,159 +178,108 @@ export default function Home() {
               borderTop: "1px solid var(--border)",
               paddingTop: "48px",
               marginBottom: "40px",
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "64px",
-              flexWrap: "wrap",
             }}
           >
-            <div style={{ flex: "0 0 auto" }}>
-              <p
-                style={{
-                  fontSize: "11px",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                  color: "var(--muted)",
-                  marginBottom: "8px",
-                  fontFamily: font,
-                }}
-              >
-                02 // Design Cycle
-              </p>
-              <p
-                style={{
-                  fontSize: "13px",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                  color: "var(--color-accent)",
-                  fontFamily: font,
-                  fontWeight: 600,
-                }}
-              >
-                DX-I
-              </p>
-            </div>
-            <div style={{ flex: "1 1 300px" }}>
-              <h2
-                style={{
-                  fontSize: "26px",
-                  fontWeight: 600,
-                  letterSpacing: "0.03em",
-                  color: "var(--foreground)",
-                  marginBottom: "14px",
-                  fontFamily: font,
-                }}
-              >
-                Design Cycle One.
-              </h2>
-              <p
-                style={{
-                  fontSize: "16px",
-                  color: "var(--muted)",
-                  lineHeight: 1.75,
-                  maxWidth: "480px",
-                  fontFamily: font,
-                  letterSpacing: "0.01em",
-                }}
-              >
-                Three interdependent subsystems. A complete ground-up engineering
-                model of a full hyperloop corridor run inside the Lab.
-                Real physics. Real geometry. No simplifications.
-              </p>
-            </div>
+            <p
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.3em",
+                textTransform: "uppercase",
+                color: "var(--muted)",
+                marginBottom: "32px",
+                fontFamily: font,
+              }}
+            >
+              02 // Designs
+            </p>
           </div>
         </FadeIn>
 
-        {/* SUBSYSTEM GRID */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "1px",
-            backgroundColor: "var(--color-accent)",
-          }}
-        >
-          {subsystems.map((s, i) => {
-            const isActive = s.status === "ACTIVE";
-            const card = (
-              <FadeIn delay={i * 0.08}>
-                <TiltCard tiltLimit={8} scale={1.02} spotlight={true} style={{ height: "100%" }}>
-                <div
-                  style={{
-                    padding: "32px",
-                    backgroundColor: "var(--card-bg)",
-                    borderLeft: isActive
-                      ? "3px solid var(--color-accent)"
-                      : "3px solid transparent",
-                    height: "100%",
-                  }}
-                >
+        {/* DX-I CARD */}
+        <Link href="/designs/dx-i" style={{ display: "block", textDecoration: "none" }}>
+          <FadeIn>
+            <TiltCard tiltLimit={6} scale={1.01} spotlight={true}>
+              <div
+                style={{
+                  padding: "40px 40px 40px 44px",
+                  backgroundColor: "var(--card-bg)",
+                  borderLeft: "3px solid var(--color-accent)",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                  gap: "32px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div>
                   <p
                     style={{
                       fontSize: "11px",
                       letterSpacing: "0.3em",
                       textTransform: "uppercase",
-                      color: isActive ? "var(--color-accent)" : "var(--muted)",
-                      marginBottom: "12px",
+                      color: "var(--color-accent)",
+                      marginBottom: "10px",
                       fontFamily: font,
                       fontWeight: 500,
                     }}
                   >
-                    {s.designation}
+                    DX-I
                   </p>
                   <h2
                     style={{
-                      fontSize: "24px",
+                      fontSize: "26px",
                       fontWeight: 600,
-                      letterSpacing: "0.08em",
-                      color: isActive ? "var(--foreground)" : "var(--muted)",
+                      letterSpacing: "0.03em",
+                      color: "var(--foreground)",
                       marginBottom: "12px",
                       fontFamily: font,
                     }}
                   >
-                    {s.name}
+                    Design Cycle One
                   </h2>
                   <p
                     style={{
                       fontSize: "14px",
                       color: "var(--muted)",
-                      marginBottom: "24px",
-                      lineHeight: 1.6,
+                      lineHeight: 1.7,
+                      maxWidth: "420px",
                       fontFamily: font,
+                      letterSpacing: "0.01em",
                     }}
                   >
-                    {s.description}
+                    Conduit, Flux, Shell. A complete ground-up engineering
+                    model of a full hyperloop corridor.
                   </p>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "8px" }}>
                   <span
                     style={{
                       fontSize: "11px",
                       letterSpacing: "0.25em",
                       textTransform: "uppercase",
-                      color: isActive ? "var(--color-accent)" : "var(--muted)",
+                      color: "var(--color-accent)",
                       fontFamily: font,
-                      fontWeight: isActive ? 500 : 400,
+                      fontWeight: 500,
                     }}
                   >
-                    {s.status}
+                    ACTIVE
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      letterSpacing: "0.2em",
+                      textTransform: "uppercase",
+                      color: "var(--muted)",
+                      fontFamily: font,
+                    }}
+                  >
+                    3 subsystems
                   </span>
                 </div>
-                </TiltCard>
-              </FadeIn>
-            );
-
-            return isActive ? (
-              <Link
-                key={s.name}
-                href={s.href}
-                style={{ display: "block", textDecoration: "none" }}
-              >
-                {card}
-              </Link>
-            ) : (
-              <div key={s.name}>{card}</div>
-            );
-          })}
-        </div>
+              </div>
+            </TiltCard>
+          </FadeIn>
+        </Link>
       </section>
 
     </main>
