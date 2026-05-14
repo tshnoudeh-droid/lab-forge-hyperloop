@@ -107,7 +107,7 @@ export default function CargoModule({ show }: { show: boolean }) {
         letterSpacing={0.18}
         maxWidth={3}
       >
-        CARGO / DX-1
+        CARGO / DX-I
       </Text>
 
       {/* ISO container corner fittings — flat cylinders */}

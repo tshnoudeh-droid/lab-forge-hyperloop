@@ -140,7 +140,7 @@ export default function PodShell({ show, activeHotspot, variant = "cargo" }: Pod
         letterSpacing={0.18}
         maxWidth={5}
       >
-        HYPERLOOP  DX - 1
+        HYPERLOOP DX-I
       </Text>
 
       {/* F logo on top surface */}
@@ -168,7 +168,7 @@ export default function PodShell({ show, activeHotspot, variant = "cargo" }: Pod
         letterSpacing={0.14}
         maxWidth={2}
       >
-        DX-1
+        DX-I
       </Text>
     </>
   );

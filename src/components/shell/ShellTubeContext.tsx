@@ -3,6 +3,9 @@
 import * as THREE from "three";
 import { TUBE } from "@/components/conduit/data/conduit-specs";
 
+// Halbach track floor reference — matches FluxTubeContext FLOOR_Y
+const FLOOR_Y = -(TUBE.innerRadius - 0.02);
+
 export default function ShellTubeContext() {
   return (
     <group>
@@ -14,7 +17,7 @@ export default function ShellTubeContext() {
         <meshStandardMaterial
           color="#909090"
           transparent
-          opacity={0.06}
+          opacity={0.10}
           side={THREE.DoubleSide}
           depthWrite={false}
         />
@@ -28,7 +31,7 @@ export default function ShellTubeContext() {
         <meshStandardMaterial
           color="#707070"
           transparent
-          opacity={0.045}
+          opacity={0.07}
           side={THREE.DoubleSide}
           depthWrite={false}
         />
@@ -41,20 +44,32 @@ export default function ShellTubeContext() {
           <meshStandardMaterial
             color="#888888"
             transparent
-            opacity={0.10}
+            opacity={0.16}
             side={THREE.DoubleSide}
             depthWrite={false}
           />
         </mesh>
       ))}
 
-      {/* Floor reference line — shows Halbach track level */}
-      <mesh position={[0, -(TUBE.innerRadius - 0.02), 0]} rotation={[Math.PI / 2, 0, 0]}>
+      {/* Mid cross-section ring — reveals bore clearance around pod */}
+      <mesh position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[TUBE.innerRadius, TUBE.outerRadius, TUBE.segments]} />
+        <meshStandardMaterial
+          color="#C4A882"
+          transparent
+          opacity={0.09}
+          side={THREE.DoubleSide}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* Floor reference strip — shows Halbach track zone (0.44m wide) */}
+      <mesh position={[0, FLOOR_Y, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <cylinderGeometry args={[0.44, 0.44, TUBE.length, 8, 1, true]} />
         <meshStandardMaterial
           color="#C4A882"
           transparent
-          opacity={0.04}
+          opacity={0.05}
           side={THREE.DoubleSide}
           depthWrite={false}
         />

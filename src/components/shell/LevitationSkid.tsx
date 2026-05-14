@@ -19,8 +19,8 @@ const SKID_L = POD.fuselageLength + 1.4;
 // Skid position derived from floor + levitation gap (independent of pod body center)
 const SKID_Y = FLOOR_Y + LEV_GAP + SKID_H / 2;
 
-// Bracket attachment point: bottom of scaled pod body
-const BRACKET_Y = SHELL_GEOMETRY.POD_Y - SHELL_GEOMETRY.SCALED_R_Y + 0.12;
+// Bracket attachment point: underbody bottom = skid top (verified: both = -1.465m)
+const BRACKET_Y = SHELL_GEOMETRY.POD_Y - SHELL_GEOMETRY.SCALED_R_Y - SHELL_GEOMETRY.UNDERBODY_H;
 
 const TRACK_Y = FLOOR_Y;
 

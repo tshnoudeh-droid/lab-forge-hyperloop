@@ -140,8 +140,9 @@ function BatteryCabinet({
 }
 
 const BATTERY_POSITIONS: [number, number, number][] = [
-  [BATTERY_X, 0, -7],
-  [BATTERY_X, 0, 8],
+  [BATTERY_X, 0, -10],
+  [BATTERY_X, 0, 0],
+  [BATTERY_X, 0, 10],
 ];
 
 export default function BatterySystem({ show, activeHotspot }: BatterySystemProps) {
